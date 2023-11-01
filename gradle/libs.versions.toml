@@ -1,0 +1,16 @@
+[versions]
+spring-boot = "3.1.4"
+
+[plugins]
+spring-plugin = { id = "org.springframework.boot", version.ref = "spring-boot" }
+
+[libraries]
+spring-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring-boot" }
+spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot" }
+
+lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
+postgresql-driver = { module = "org.postgresql:postgresql", version = "42.6.0" }
+
+#Test libraries
+testcontainers-core = { module = "org.testcontainers:testcontainers", version = "1.19.1" }
+jupiter = { module = "org.junit.jupiter:junit-jupiter", version = "5.10.0" }
