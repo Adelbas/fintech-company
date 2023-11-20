@@ -1,14 +1,29 @@
 version: '3.8'
 services:
+  product-engine:
+    build: /product-engine
+    restart: always
+    pull_policy: build
+    depends_on:
+      - db
+    environment:
+      - TZ=Europe/Moscow
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+    ports:
+      - '9090:9090'
+
   db:
     image: postgres:14.1-alpine
     restart: always
     environment:
+      - TZ=Europe/Moscow
       - POSTGRES_DB=fintech
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - '5432:5432'
+      - '5433:5432'
     volumes:
       - db:/var/lib/postgresql/data
 

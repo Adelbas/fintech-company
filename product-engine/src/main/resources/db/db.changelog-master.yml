@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - include :
+      file: classpath:/db/changelog/001-create-table-product.sql
+  - include :
+      file: classpath:/db/changelog/002-insert-into-product.sql
+  - include:
+      file: classpath:/db/changelog/003-create-table-agreement.sql
+  - include:
+      file: classpath:/db/changelog/004-create-table-payment-schedule.sql
+  - include:
+      file: classpath:/db/changelog/005-create-table-payment-schedule-payment.sql
