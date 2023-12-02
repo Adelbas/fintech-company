@@ -1,0 +1,9 @@
+server:
+  port: 8080
+
+api:
+  client:
+    origination:
+      grpc:
+        host: localhost
+        port: 9090

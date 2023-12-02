@@ -10,6 +10,11 @@ import io.grpc.StatusRuntimeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+/**
+ * Represents grpc client to interact with Origination microservice.
+ * Uses {@link OriginationGrpcClientProperty} to set properties for connection.
+ * Uses {@link ApplicationServiceBlockingStub} to do rpc calls.
+ */
 @Slf4j
 @Component
 public class OriginationGrpcClient {

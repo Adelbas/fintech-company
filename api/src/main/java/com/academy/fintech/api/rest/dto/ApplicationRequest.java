@@ -1,7 +1,9 @@
-package com.academy.fintech.api.rest.application;
+package com.academy.fintech.api.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
 
+@Builder
 public record ApplicationRequest(
         @JsonProperty("first_name")
         String firstName,

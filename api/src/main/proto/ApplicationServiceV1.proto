@@ -19,6 +19,3 @@ message ApplicationRequest{
 message ApplicationResponse{
   string applicationId = 1;
 }
-
-// Request Path
-//com.academy.fintech.application.ApplicationService/Create
