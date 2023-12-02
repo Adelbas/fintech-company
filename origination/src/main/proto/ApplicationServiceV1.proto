@@ -6,6 +6,7 @@ option java_multiple_files = true;
 
 service ApplicationService{
   rpc Create(ApplicationRequest) returns (ApplicationResponse) {}
+  rpc CancelApplication(CancelApplicationRequest) returns (CancelApplicationResponse) {}
 }
 
 message ApplicationRequest{
@@ -18,4 +19,12 @@ message ApplicationRequest{
 
 message ApplicationResponse{
   string applicationId = 1;
+}
+
+message CancelApplicationRequest{
+  string applicationId = 1;
+}
+
+message CancelApplicationResponse{
+  bool isCanceled = 1;
 }
