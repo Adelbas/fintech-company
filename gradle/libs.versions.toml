@@ -1,12 +1,11 @@
 [versions]
 spring-boot = "3.1.4"
 grpc = "1.58.0"
-protobuf = "3.23.0"
 mapstruct = "1.5.5.Final"
 test-containers = "1.19.1"
 
 [plugins]
-spring-plugin = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring = { id = "org.springframework.boot", version.ref = "spring-boot" }
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }
 
 [libraries]
@@ -26,11 +25,7 @@ mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
 
 #Grpc libraries
-grpc-protobuf = { module = "io.grpc:grpc-protobuf", version.ref = "grpc" }
-grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
 grpc-test = { module = "io.grpc:grpc-testing", version.ref = "grpc" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
-protobuf-java-util = { module = "com.google.protobuf:protobuf-java-util", version.ref = "protobuf" }
 
 #Test libraries
 testcontainers-jupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "test-containers" }
