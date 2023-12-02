@@ -1,6 +1,10 @@
 package com.academy.fintech.origination.grpc.application.v1;
 
-import com.academy.fintech.application.*;
+import com.academy.fintech.application.ApplicationRequest;
+import com.academy.fintech.application.ApplicationResponse;
+import com.academy.fintech.application.ApplicationServiceGrpc;
+import com.academy.fintech.application.CancelApplicationRequest;
+import com.academy.fintech.application.CancelApplicationResponse;
 import com.academy.fintech.origination.core.service.application.ApplicationCreationService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;

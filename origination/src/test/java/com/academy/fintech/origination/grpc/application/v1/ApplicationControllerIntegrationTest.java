@@ -1,11 +1,19 @@
 package com.academy.fintech.origination.grpc.application.v1;
 
-import com.academy.fintech.application.*;
+import com.academy.fintech.application.ApplicationRequest;
+import com.academy.fintech.application.ApplicationResponse;
+import com.academy.fintech.application.ApplicationServiceGrpc;
+import com.academy.fintech.application.CancelApplicationRequest;
+import com.academy.fintech.application.CancelApplicationResponse;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationRepository;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
-import io.grpc.*;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.Metadata;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
