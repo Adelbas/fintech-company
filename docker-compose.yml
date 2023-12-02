@@ -1,5 +1,37 @@
 version: '3.8'
 services:
+  api:
+    build: /api
+    restart: always
+    pull_policy: build
+    depends_on:
+      - db
+    environment:
+      - TZ=Europe/Moscow
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_api
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - SERVER_PORT=8083
+      - ORIGINATION_GRPC_HOST=origination
+      - ORIGINATION_GRPC_PORT=9094
+    ports:
+      - '8083:8083'
+
+  origination:
+    build: /origination
+    restart: always
+    pull_policy: build
+    depends_on:
+      - db
+    environment:
+      - TZ=Europe/Moscow
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_origination
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - GRPC_PORT=9094
+    ports:
+      - '9094:9094'
+
   product-engine:
     build: /product-engine
     restart: always
@@ -8,7 +40,7 @@ services:
       - db
     environment:
       - TZ=Europe/Moscow
-      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/product_engine
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=postgres
     ports:
@@ -19,13 +51,13 @@ services:
     restart: always
     environment:
       - TZ=Europe/Moscow
-      - POSTGRES_DB=fintech
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - '5433:5432'
     volumes:
       - db:/var/lib/postgresql/data
+      - ./docker/pg-init-scripts:/docker-entrypoint-initdb.d
 
 volumes:
   db:
