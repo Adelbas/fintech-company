@@ -5,9 +5,9 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 
 /**
- * Represents calculations for payment schedule
+ * Represents functions for payment schedule
  */
-public class PaymentScheduleCalculations {
+public class PaymentScheduleFunctions {
 
     /**
      * Realization of PMT algorithm

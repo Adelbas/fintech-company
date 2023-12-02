@@ -3,8 +3,25 @@ package com.academy.fintech.pe.core.service.agreement.db.agreement.entity;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.enums.AgreementStatus;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.entity.PaymentSchedule;
 import com.academy.fintech.pe.core.service.agreement.db.product.entity.Product;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -55,7 +72,7 @@ public class Agreement {
     @Column(name = "next_payment_date")
     private LocalDateTime nextPaymentDate;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "agreement")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "agreement")
     private List<PaymentSchedule> paymentSchedules;
 }
 

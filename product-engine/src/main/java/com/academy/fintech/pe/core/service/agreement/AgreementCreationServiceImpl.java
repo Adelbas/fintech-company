@@ -1,6 +1,6 @@
 package com.academy.fintech.pe.core.service.agreement;
 
-import com.academy.fintech.pe.core.calculation.payment_schedule.PaymentScheduleCalculations;
+import com.academy.fintech.pe.core.calculation.payment_schedule.PaymentScheduleFunctions;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.product.ProductService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreement;
@@ -86,14 +86,30 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
     private boolean isValidAgreementParameters(AgreementDto agreementDto, Product product) {
         BigDecimal principalAmount = agreementDto.disbursementAmount().add(agreementDto.originationAmount());
 
-        return principalAmount.compareTo(product.getPrincipal_amount_min()) >= 0 &&
-                principalAmount.compareTo(product.getPrincipal_amount_max()) <= 0 &&
-                agreementDto.originationAmount().compareTo(product.getOrigination_amount_min()) >= 0 &&
-                agreementDto.originationAmount().compareTo(product.getOrigination_amount_max()) <= 0 &&
-                agreementDto.interest().compareTo(product.getInterest_min()) >= 0 &&
-                agreementDto.interest().compareTo(product.getInterest_max()) <= 0 &&
-                agreementDto.loanTerm() >= product.getLoan_term_min() &&
-                agreementDto.loanTerm() <= product.getLoan_term_max();
+        return isValidPrincipalAmount(principalAmount, product.getPrincipal_amount_min(), product.getPrincipal_amount_max()) &&
+                isValidOriginationAmount(agreementDto.originationAmount(), product.getOrigination_amount_min(), product.getOrigination_amount_max()) &&
+                isValidInterest(agreementDto.interest(), product.getInterest_min(), product.getInterest_max()) &&
+                isValidLoanTerm(agreementDto.loanTerm(), product.getLoan_term_min(), product.getLoan_term_max());
+    }
+
+    private boolean isValidPrincipalAmount(BigDecimal principalAmount, BigDecimal principalAmountMin, BigDecimal principalAmountMax) {
+        return principalAmount.compareTo(principalAmountMin) >= 0 &&
+                principalAmount.compareTo(principalAmountMax) <= 0;
+    }
+
+    private boolean isValidOriginationAmount(BigDecimal originationAmount, BigDecimal originationAmountMin, BigDecimal originationAmountMax) {
+        return originationAmount.compareTo(originationAmountMin) >= 0 &&
+                originationAmount.compareTo(originationAmountMax) <= 0;
+    }
+
+    private boolean isValidInterest(BigDecimal interest, BigDecimal interestMin, BigDecimal interestMax) {
+        return interest.compareTo(interestMin) >= 0 &&
+                interest.compareTo(interestMax) <= 0;
+    }
+
+    private boolean isValidLoanTerm(int loanTerm, int loanTermMin, int loanTermMax) {
+        return loanTerm >= loanTermMin &&
+                loanTerm <= loanTermMax;
     }
 
     /**
@@ -110,7 +126,7 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
     public PaymentScheduleDto activateAgreement(AgreementActivationDto agreementActivationDto) {
         Agreement agreement = agreementService.getAgreement(agreementActivationDto.agreementNumber());
 
-        if (agreement.getStatus().equals(AgreementStatus.ACTIVE)) {
+        if (AgreementStatus.ACTIVE.equals(agreement.getStatus())) {
             throw new InvalidParametersException("Agreement is already activated");
         }
 
@@ -167,7 +183,7 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
 
     /**
      * Generates payment schedule payments for each period.
-     * Uses {@link PaymentScheduleCalculations} to calculate payments values.
+     * Uses {@link PaymentScheduleFunctions} to calculate payments values.
      *
      * @param paymentSchedule generating payments for this payment schedule
      * @return List of {@link PaymentSchedulePayment payments}
@@ -178,21 +194,21 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
 
         LocalDateTime paymentDate = agreement.getDisbursementDate();
         BigDecimal balance = agreement.getPrincipalAmount();
-        BigDecimal periodPayment = PaymentScheduleCalculations.calculatePMT(agreement.getPrincipalAmount(), agreement.getInterest(), agreement.getLoanTerm());
+        BigDecimal periodPayment = PaymentScheduleFunctions.calculatePMT(agreement.getPrincipalAmount(), agreement.getInterest(), agreement.getLoanTerm());
 
         for (int i = 0; i < agreement.getLoanTerm(); i++) {
             int period = i + 1;
-            BigDecimal interestPayment = PaymentScheduleCalculations.calculateIPMT(agreement.getPrincipalAmount(), agreement.getInterest(), periodPayment, period);
+            BigDecimal interestPayment = PaymentScheduleFunctions.calculateIPMT(agreement.getPrincipalAmount(), agreement.getInterest(), periodPayment, period);
 
             //If it is last period payment do rounding for last payment
-            BigDecimal principalPayment = PaymentScheduleCalculations.calculatePPMT(periodPayment, interestPayment);
+            BigDecimal principalPayment = PaymentScheduleFunctions.calculatePPMT(periodPayment, interestPayment);
             if (period == agreement.getLoanTerm() && !principalPayment.equals(balance)) {
                 principalPayment = balance;
                 periodPayment = principalPayment.add(interestPayment);
             }
 
             balance = balance.subtract(principalPayment);
-            paymentDate = PaymentScheduleCalculations.calculateNextPaymentDate(paymentDate);
+            paymentDate = PaymentScheduleFunctions.calculateNextPaymentDate(paymentDate);
 
             paymentSchedulePayments.add(PaymentSchedulePayment.builder()
                     .paymentSchedule(paymentSchedule)

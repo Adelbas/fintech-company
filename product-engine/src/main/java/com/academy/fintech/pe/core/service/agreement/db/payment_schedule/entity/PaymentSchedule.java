@@ -1,8 +1,22 @@
 package com.academy.fintech.pe.core.service.agreement.db.payment_schedule.entity;
 
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreement;
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -28,6 +42,6 @@ public class PaymentSchedule {
     @Column(name = "version", nullable = false)
     private Integer version;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "paymentSchedule")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "paymentSchedule")
     private List<PaymentSchedulePayment> payments;
 }

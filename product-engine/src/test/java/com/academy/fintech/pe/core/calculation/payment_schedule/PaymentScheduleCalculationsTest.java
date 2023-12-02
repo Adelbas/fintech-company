@@ -15,7 +15,7 @@ public class PaymentScheduleCalculationsTest {
     @ParameterizedTest(name = "Test calculate PMT")
     @MethodSource("provideArgumentsForPMTTest")
     void calculatePMT(BigDecimal principalAmount, BigDecimal interest, int term, BigDecimal expectedPeriodPayment) {
-        BigDecimal actualPeriodPayment = PaymentScheduleCalculations.calculatePMT(principalAmount, interest, term);
+        BigDecimal actualPeriodPayment = PaymentScheduleFunctions.calculatePMT(principalAmount, interest, term);
 
         assertThat(actualPeriodPayment).isEqualTo(expectedPeriodPayment);
     }
@@ -23,7 +23,7 @@ public class PaymentScheduleCalculationsTest {
     @ParameterizedTest(name = "Test calculate IPMT")
     @MethodSource("provideArgumentsForIPMTTest")
     void calculateIPMT(BigDecimal principalAmount, BigDecimal interest, BigDecimal periodPayment, int period, BigDecimal expectedInterestPayment) {
-        BigDecimal actualInterestPayment = PaymentScheduleCalculations.calculateIPMT(principalAmount, interest, periodPayment, period);
+        BigDecimal actualInterestPayment = PaymentScheduleFunctions.calculateIPMT(principalAmount, interest, periodPayment, period);
 
         assertThat(actualInterestPayment).isEqualTo(expectedInterestPayment);
     }
@@ -31,7 +31,7 @@ public class PaymentScheduleCalculationsTest {
     @ParameterizedTest(name = "Test calculate PPMT")
     @MethodSource("provideArgumentsForPPMTTest")
     void calculatePPMT(BigDecimal periodPayment, BigDecimal interestPayment, BigDecimal expectedPrincipalPayment) {
-        BigDecimal actualPrincipalPayment = PaymentScheduleCalculations.calculatePPMT(periodPayment, interestPayment);
+        BigDecimal actualPrincipalPayment = PaymentScheduleFunctions.calculatePPMT(periodPayment, interestPayment);
 
         assertThat(actualPrincipalPayment).isEqualTo(expectedPrincipalPayment);
     }
@@ -39,7 +39,7 @@ public class PaymentScheduleCalculationsTest {
     @ParameterizedTest(name = "Test calculate nextPaymentDate")
     @MethodSource("provideArgumentsForNextPaymentDateTest")
     void calculateNextPaymentDate(LocalDateTime previousPaymentDate, LocalDateTime expectedNextPaymentDate) {
-        LocalDateTime actualNextPaymentDate = PaymentScheduleCalculations.calculateNextPaymentDate(previousPaymentDate);
+        LocalDateTime actualNextPaymentDate = PaymentScheduleFunctions.calculateNextPaymentDate(previousPaymentDate);
 
         assertThat(actualNextPaymentDate).isEqualTo(expectedNextPaymentDate);
     }

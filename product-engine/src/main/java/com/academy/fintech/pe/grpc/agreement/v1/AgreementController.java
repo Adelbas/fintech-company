@@ -1,6 +1,11 @@
 package com.academy.fintech.pe.grpc.agreement.v1;
 
-import com.academy.fintech.pe.*;
+
+import com.academy.fintech.pe.AgreementActivationRequest;
+import com.academy.fintech.pe.AgreementRequest;
+import com.academy.fintech.pe.AgreementResponse;
+import com.academy.fintech.pe.AgreementServiceGrpc;
+import com.academy.fintech.pe.PaymentScheduleResponse;
 import com.academy.fintech.pe.core.service.agreement.AgreementCreationService;
 import com.academy.fintech.pe.public_interface.agreement.dto.PaymentScheduleDto;
 import io.grpc.stub.StreamObserver;
@@ -27,8 +32,6 @@ public class AgreementController extends AgreementServiceGrpc.AgreementServiceIm
 
     @Override
     public void createAgreement(AgreementRequest request, StreamObserver<AgreementResponse> responseObserver) {
-        log.info("Handle create agreement request: {}", request);
-
         UUID agreementNumber = agreementCreationService.createAgreement(agreementGrpcMapper.toAgreementDto(request));
         AgreementResponse agreementResponse = AgreementResponse.newBuilder().setAgreementNumber(agreementNumber.toString()).build();
 
@@ -38,8 +41,6 @@ public class AgreementController extends AgreementServiceGrpc.AgreementServiceIm
 
     @Override
     public void activateAgreement(AgreementActivationRequest request, StreamObserver<PaymentScheduleResponse> responseObserver) {
-        log.info("Handle disbursement request: {}", request);
-
         PaymentScheduleDto paymentScheduleDto = agreementCreationService.activateAgreement(agreementGrpcMapper.toAgreementActivationDto(request));
         PaymentScheduleResponse paymentScheduleResponse = agreementGrpcMapper.toPaymentScheduleResponse(paymentScheduleDto);
 
