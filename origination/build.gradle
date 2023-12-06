@@ -1,10 +1,24 @@
 plugins {
+    alias(libs.plugins.spring)
     alias(libs.plugins.protobuf)
 }
 
 dependencies {
     implementation libs.spring.grpc
+    implementation libs.spring.data.jpa
+    implementation libs.spring.validation
+
+    implementation libs.postgresql.driver
     implementation libs.javax.annotation
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    testImplementation libs.spring.test
+    testImplementation libs.assertj
+    testImplementation libs.grpc.test
+    testImplementation libs.testcontainers.jupiter
+    testImplementation libs.testcontainers.postgresql
 }
 
 protobuf {
