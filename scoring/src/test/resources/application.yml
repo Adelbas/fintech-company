@@ -1,0 +1,11 @@
+grpc:
+  host: localhost
+  port: 9090
+  enable-reflection: true
+
+api:
+  client:
+    product-engine:
+      grpc:
+        host: localhost
+        port: 9091
