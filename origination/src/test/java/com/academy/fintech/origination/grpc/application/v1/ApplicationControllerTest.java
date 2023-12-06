@@ -4,7 +4,7 @@ import com.academy.fintech.application.ApplicationRequest;
 import com.academy.fintech.application.ApplicationResponse;
 import com.academy.fintech.application.CancelApplicationRequest;
 import com.academy.fintech.application.CancelApplicationResponse;
-import com.academy.fintech.origination.core.service.application.ApplicationCreationService;
+import com.academy.fintech.origination.core.service.application.ApplicationService;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
 import io.grpc.internal.testing.StreamRecorder;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class ApplicationControllerTest {
 
     @Mock
-    private ApplicationCreationService applicationCreationService;
+    private ApplicationService applicationService;
 
     @Spy
     private ApplicationGrpcMapper applicationGrpcMapper = new ApplicationGrpcMapperImpl();
@@ -40,7 +40,7 @@ public class ApplicationControllerTest {
         ApplicationRequest applicationRequest = mock(ApplicationRequest.class);
         UUID expectedApplicationId = UUID.randomUUID();
         StreamRecorder<ApplicationResponse> responseObserver = StreamRecorder.create();
-        when(applicationCreationService.createApplication(any(ApplicationDto.class))).thenReturn(expectedApplicationId);
+        when(applicationService.createApplication(any(ApplicationDto.class))).thenReturn(expectedApplicationId);
 
         applicationController.create(applicationRequest, responseObserver);
 
@@ -53,7 +53,7 @@ public class ApplicationControllerTest {
     void cancelApplication_whenApplicationIsCanceled() {
         CancelApplicationRequest cancelApplicationRequest = mock(CancelApplicationRequest.class);
         StreamRecorder<CancelApplicationResponse> responseObserver = StreamRecorder.create();
-        when(applicationCreationService.cancelApplication(any(CancelApplicationDto.class))).thenReturn(true);
+        when(applicationService.cancelApplication(any(CancelApplicationDto.class))).thenReturn(true);
 
         applicationController.cancelApplication(cancelApplicationRequest, responseObserver);
 
@@ -66,7 +66,7 @@ public class ApplicationControllerTest {
     void cancelApplication_whenApplicationIsNotCanceled() {
         CancelApplicationRequest cancelApplicationRequest = mock(CancelApplicationRequest.class);
         StreamRecorder<CancelApplicationResponse> responseObserver = StreamRecorder.create();
-        when(applicationCreationService.cancelApplication(any(CancelApplicationDto.class))).thenReturn(false);
+        when(applicationService.cancelApplication(any(CancelApplicationDto.class))).thenReturn(false);
 
         applicationController.cancelApplication(cancelApplicationRequest, responseObserver);
 

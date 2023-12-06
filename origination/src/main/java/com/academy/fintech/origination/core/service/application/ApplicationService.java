@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Interface that provides creation and cancellation of application
  */
-public interface ApplicationCreationService {
+public interface ApplicationService {
     UUID createApplication(@Valid ApplicationDto applicationDto);
 
     boolean cancelApplication(CancelApplicationDto cancelApplicationDto);

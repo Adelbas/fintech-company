@@ -22,12 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ApplicationCreationServiceTest {
+public class ApplicationServiceTest {
 
     @Mock
     private ApplicationService applicationService;
@@ -35,11 +34,8 @@ public class ApplicationCreationServiceTest {
     @Mock
     private ClientService clientService;
 
-    @Mock
-    private ClientCreationService clientCreationService;
-
     @InjectMocks
-    private ApplicationCreationServiceImpl applicationCreationServiceImpl;
+    private ApplicationServiceImpl applicationCreationServiceImpl;
 
     @Test
     void createApplication_whenClientNotExists() {
@@ -57,17 +53,16 @@ public class ApplicationCreationServiceTest {
                 .email(applicationDto.email())
                 .salary(applicationDto.salary())
                 .build();
-        when(clientService.findClient(applicationDto.email())).thenReturn(Optional.empty());
-        when(clientCreationService.createClient(
+        when(clientService.getOrCreate(
+                client.getEmail(),
                 client.getFirstName(),
                 client.getLastName(),
-                client.getEmail(),
                 client.getSalary()
         )).thenReturn(client);
 
         applicationCreationServiceImpl.createApplication(applicationDto);
 
-        verify(applicationService, only()).saveApplication(
+        verify(applicationService).saveApplication(
                 Application.builder()
                         .client(client)
                         .status(ApplicationStatus.NEW)
@@ -93,7 +88,12 @@ public class ApplicationCreationServiceTest {
                 .email(applicationDto.email())
                 .salary(applicationDto.salary())
                 .build();
-        when(clientService.findClient(applicationDto.email())).thenReturn(Optional.of(client));
+        when(clientService.getOrCreate(
+                client.getEmail(),
+                client.getFirstName(),
+                client.getLastName(),
+                client.getSalary()
+        )).thenReturn(client);
         when(applicationService.findDuplicateApplication(
                 client.getClientId(),
                 ApplicationStatus.NEW,
@@ -128,7 +128,12 @@ public class ApplicationCreationServiceTest {
                 .email(applicationDto.email())
                 .salary(applicationDto.salary())
                 .build();
-        when(clientService.findClient(applicationDto.email())).thenReturn(Optional.of(client));
+        when(clientService.getOrCreate(
+                client.getEmail(),
+                client.getFirstName(),
+                client.getLastName(),
+                client.getSalary()
+        )).thenReturn(client);
         UUID existApplicationId = UUID.randomUUID();
         when(applicationService.findDuplicateApplication(
                 client.getClientId(),

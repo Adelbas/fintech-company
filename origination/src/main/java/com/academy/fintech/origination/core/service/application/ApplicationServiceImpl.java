@@ -1,6 +1,5 @@
 package com.academy.fintech.origination.core.service.application;
 
-import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.ClientService;
@@ -8,6 +7,7 @@ import com.academy.fintech.origination.core.service.application.db.client.entity
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
 import com.academy.fintech.origination.public_interface.application.exception.ApplicationDuplicateException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,19 +18,16 @@ import java.util.UUID;
 
 /**
  * Represents application creation service implementation.
- * Uses {@link ApplicationService} and {@link ClientService} to interact with database.
- * Uses {@link ClientCreationService} to create clients.
+ * Uses {@link com.academy.fintech.origination.core.service.application.db.application.ApplicationService} and {@link ClientService} to interact with database.
  */
 @Service
 @Validated
 @RequiredArgsConstructor
-public class ApplicationCreationServiceImpl implements ApplicationCreationService {
+public class ApplicationServiceImpl implements ApplicationService {
 
-    private final ApplicationService applicationService;
+    private final com.academy.fintech.origination.core.service.application.db.application.ApplicationService applicationService;
 
     private final ClientService clientService;
-
-    private final ClientCreationService clientCreationService;
 
     /**
      * Provides application creation.
@@ -43,27 +40,23 @@ public class ApplicationCreationServiceImpl implements ApplicationCreationServic
      * @throws ApplicationDuplicateException with applicationId in message if same application exists in database
      */
     @Override
+    @Transactional
     public UUID createApplication(@Valid ApplicationDto applicationDto) {
-        Optional<Client> optionalClient = clientService.findClient(applicationDto.email());
-        Client client = optionalClient.orElseGet(
-                () -> clientCreationService.createClient(
-                        applicationDto.firstName(),
-                        applicationDto.lastName(),
-                        applicationDto.email(),
-                        applicationDto.salary())
+        Client client = clientService.getOrCreate(
+                applicationDto.email(),
+                applicationDto.firstName(),
+                applicationDto.lastName(),
+                applicationDto.salary()
         );
 
-        if (optionalClient.isPresent()) {
-            Optional<Application> duplicateApplication = applicationService.findDuplicateApplication(
-                    client.getClientId(),
-                    ApplicationStatus.NEW,
-                    applicationDto.requestedDisbursementAmount()
-            );
-
-            duplicateApplication.ifPresent((application) -> {
-                throw new ApplicationDuplicateException(application.getApplicationId());
-            });
-        }
+        Optional<Application> duplicateApplication = applicationService.findDuplicateApplication(
+                client.getClientId(),
+                ApplicationStatus.NEW,
+                applicationDto.requestedDisbursementAmount()
+        );
+        duplicateApplication.ifPresent((application) -> {
+            throw new ApplicationDuplicateException(application.getApplicationId());
+        });
 
         Application application = Application.builder()
                 .client(client)

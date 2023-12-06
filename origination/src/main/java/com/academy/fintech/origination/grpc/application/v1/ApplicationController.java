@@ -5,7 +5,7 @@ import com.academy.fintech.application.ApplicationResponse;
 import com.academy.fintech.application.ApplicationServiceGrpc;
 import com.academy.fintech.application.CancelApplicationRequest;
 import com.academy.fintech.application.CancelApplicationResponse;
-import com.academy.fintech.origination.core.service.application.ApplicationCreationService;
+import com.academy.fintech.origination.core.service.application.ApplicationService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,7 @@ import java.util.UUID;
 
 /**
  * Application grpc controller that provides creating and canceling of application.
- * Uses {@link ApplicationCreationService} to perform logic.
+ * Uses {@link ApplicationService} to perform logic.
  * Uses {@link ApplicationGrpcMapper} to map grpc request to DTO and vice versa.
  * Uses {@link ApplicationExceptionHandler} to handle exceptions
  */
@@ -24,13 +24,13 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ApplicationController extends ApplicationServiceGrpc.ApplicationServiceImplBase {
 
-    private final ApplicationCreationService applicationCreationService;
+    private final ApplicationService applicationService;
 
     private final ApplicationGrpcMapper applicationGrpcMapper;
 
     @Override
     public void create(ApplicationRequest request, StreamObserver<ApplicationResponse> responseObserver) {
-        UUID applicationId = applicationCreationService.createApplication(applicationGrpcMapper.toApplicationDto(request));
+        UUID applicationId = applicationService.createApplication(applicationGrpcMapper.toApplicationDto(request));
 
         responseObserver.onNext(
                 ApplicationResponse.newBuilder()
@@ -42,7 +42,7 @@ public class ApplicationController extends ApplicationServiceGrpc.ApplicationSer
 
     @Override
     public void cancelApplication(CancelApplicationRequest request, StreamObserver<CancelApplicationResponse> responseObserver) {
-        boolean isCanceled = applicationCreationService.cancelApplication(applicationGrpcMapper.toCancelApplicationDto(request));
+        boolean isCanceled = applicationService.cancelApplication(applicationGrpcMapper.toCancelApplicationDto(request));
 
         responseObserver.onNext(
                 CancelApplicationResponse.newBuilder()
