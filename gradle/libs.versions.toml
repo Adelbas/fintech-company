@@ -15,6 +15,7 @@ spring-actuator = { module = "org.springframework.boot:spring-boot-starter-actua
 spring-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring-boot" }
 spring-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
 spring-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
+spring-email = { module ="org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
 spring-grpc = { module = "io.github.lognet:grpc-spring-boot-starter", version = "5.1.0" }
 
 #Additional libraries
