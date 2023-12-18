@@ -1,0 +1,10 @@
+grpc:
+  port: ${GRPC_PORT}
+  enable-reflection: true
+
+api:
+  client:
+    product-engine:
+      grpc:
+        host: ${PRODUCT_ENGINE_GRPC_HOST}
+        port: ${PRODUCT_ENGINE_GRPC_PORT}

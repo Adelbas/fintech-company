@@ -5,6 +5,7 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,4 +14,6 @@ public interface ApplicationRepository extends JpaRepository<Application, UUID> 
     Optional<Application> findApplicationByClientClientIdAndStatusAndRequestedDisbursementAmount(UUID clientId,
                                                                                                  ApplicationStatus applicationStatus,
                                                                                                  BigDecimal requestedDisbursementAmount);
+
+    Optional<List<Application>> findByStatus(ApplicationStatus status);
 }

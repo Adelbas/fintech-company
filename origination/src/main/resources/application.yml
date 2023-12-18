@@ -6,6 +6,27 @@ spring:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_SENDER_USERNAME}
+    password: ${EMAIL_SENDER_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 grpc:
   port: ${GRPC_PORT}
   enable-reflection: true
+api:
+  client:
+    scoring:
+      grpc:
+        host: ${SCORING_GRPC_HOST}
+        port: ${SCORING_GRPC_PORT}
+scoring:
+  scheduling:
+    initial-delay: ${SCHEDULER_INITIAL_DELAY}
+    interval: ${SCHEDULER_INTERVAL}

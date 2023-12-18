@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,5 +46,10 @@ public class ApplicationService {
 
     public void removeApplication(Application application) {
         applicationRepository.delete(application);
+    }
+
+    public List<Application> getNewApplications() {
+        return applicationRepository.findByStatus(ApplicationStatus.NEW)
+                .orElse(new ArrayList<>());
     }
 }

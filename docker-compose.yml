@@ -29,8 +29,26 @@ services:
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=postgres
       - GRPC_PORT=9094
+      - SCORING_GRPC_HOST=scoring
+      - SCORING_GRPC_PORT=9095
+      - SCHEDULER_INITIAL_DELAY=PT01M
+      - SCHEDULER_INTERVAL=PT01M
+      - EMAIL_SENDER_USERNAME=username@gmail.com
+      - EMAIL_SENDER_PASSWORD=password
     ports:
       - '9094:9094'
+
+  scoring:
+    build: /scoring
+    restart: always
+    pull_policy: build
+    environment:
+      - TZ=Europe/Moscow
+      - GRPC_PORT=9095
+      - PRODUCT_ENGINE_GRPC_HOST=product-engine
+      - PRODUCT_ENGINE_GRPC_PORT=9090
+    ports:
+      - '9095:9095'
 
   product-engine:
     build: /product-engine
@@ -40,7 +58,7 @@ services:
       - db
     environment:
       - TZ=Europe/Moscow
-      - DATASOURCE_URL=jdbc:postgresql://db:5432/product_engine
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_product_engine
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=postgres
     ports:

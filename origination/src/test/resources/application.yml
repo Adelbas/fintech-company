@@ -1,0 +1,32 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yml
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/fintech_origination
+    username: postgres
+    password: postgres
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: test@mail.ru
+    password: password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+grpc:
+  port: 9090
+  enable-reflection: true
+api:
+  client:
+    scoring:
+      grpc:
+        host: localhost
+        port: 9091
+scoring:
+  scheduling:
+    initial-delay: PT0.1S
+    interval: PT0.1S
