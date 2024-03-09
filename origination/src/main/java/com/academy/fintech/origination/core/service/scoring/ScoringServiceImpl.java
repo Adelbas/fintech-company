@@ -8,6 +8,7 @@ import com.academy.fintech.origination.core.service.scoring.client.ScoringClient
 import com.academy.fintech.origination.public_interface.application.ApplicationMapper;
 import com.academy.fintech.origination.public_interface.scoring.ScoringRequestDto;
 import com.academy.fintech.origination.public_interface.scoring.ScoringResponseDto;
+import com.academy.fintech.origination.public_interface.scoring.ScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

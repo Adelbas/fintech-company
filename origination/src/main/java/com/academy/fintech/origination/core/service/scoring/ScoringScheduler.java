@@ -3,6 +3,7 @@ package com.academy.fintech.origination.core.service.scoring;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
+import com.academy.fintech.origination.public_interface.scoring.ScoringService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

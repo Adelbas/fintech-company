@@ -3,6 +3,7 @@ package com.academy.fintech.origination.core.service.scoring;
 import com.academy.fintech.origination.core.configuration.SchedulerConfiguration;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
+import com.academy.fintech.origination.public_interface.scoring.ScoringService;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;

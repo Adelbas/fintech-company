@@ -3,6 +3,7 @@ package com.academy.fintech.scoring.core.service;
 import com.academy.fintech.scoring.core.product_engine.client.ProductEngineClientService;
 import com.academy.fintech.scoring.core.dto.ScoringDataRequestDto;
 import com.academy.fintech.scoring.core.dto.ScoringDataResponseDto;
+import com.academy.fintech.scoring.public_interface.ScoringDataService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -6,6 +6,7 @@ import com.academy.fintech.scoring.core.dto.PaymentSchedulePaymentDto;
 import com.academy.fintech.scoring.core.dto.PaymentStatus;
 import com.academy.fintech.scoring.core.dto.ScoringDataRequestDto;
 import com.academy.fintech.scoring.core.dto.ScoringDataResponseDto;
+import com.academy.fintech.scoring.public_interface.ScoringDataService;
 import com.academy.fintech.scoring.public_interface.dto.ScoringRequestDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

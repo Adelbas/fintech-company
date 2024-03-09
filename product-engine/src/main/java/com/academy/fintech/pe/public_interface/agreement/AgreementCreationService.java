@@ -1,4 +1,4 @@
-package com.academy.fintech.pe.core.service.agreement;
+package com.academy.fintech.pe.public_interface.agreement;
 
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementActivationDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementDto;

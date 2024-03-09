@@ -1,4 +1,4 @@
-package com.academy.fintech.origination.core.service.application;
+package com.academy.fintech.origination.public_interface.application;
 
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;

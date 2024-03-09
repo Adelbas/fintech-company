@@ -1,4 +1,4 @@
-package com.academy.fintech.scoring.core.service;
+package com.academy.fintech.scoring.public_interface;
 
 import com.academy.fintech.scoring.core.dto.ScoringDataRequestDto;
 import com.academy.fintech.scoring.core.dto.ScoringDataResponseDto;

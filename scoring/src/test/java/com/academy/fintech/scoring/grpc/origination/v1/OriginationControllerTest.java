@@ -2,7 +2,7 @@ package com.academy.fintech.scoring.grpc.origination.v1;
 
 import com.academy.fintech.scoring.ScoringRequest;
 import com.academy.fintech.scoring.ScoringResponse;
-import com.academy.fintech.scoring.core.service.ScoringService;
+import com.academy.fintech.scoring.public_interface.ScoringService;
 import com.academy.fintech.scoring.public_interface.dto.ScoringRequestDto;
 import io.grpc.internal.testing.StreamRecorder;
 import org.junit.jupiter.api.Test;

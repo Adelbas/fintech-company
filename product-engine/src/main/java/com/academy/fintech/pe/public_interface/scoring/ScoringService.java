@@ -1,4 +1,4 @@
-package com.academy.fintech.pe.core.service.agreement;
+package com.academy.fintech.pe.public_interface.scoring;
 
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataRequestDto;
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataResponseDto;

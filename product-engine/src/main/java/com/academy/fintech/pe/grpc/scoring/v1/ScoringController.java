@@ -1,6 +1,6 @@
 package com.academy.fintech.pe.grpc.scoring.v1;
 
-import com.academy.fintech.pe.core.service.agreement.ScoringService;
+import com.academy.fintech.pe.public_interface.scoring.ScoringService;
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataRequestDto;
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataResponseDto;
 import com.academy.fintech.scoring.ScoringDataRequest;

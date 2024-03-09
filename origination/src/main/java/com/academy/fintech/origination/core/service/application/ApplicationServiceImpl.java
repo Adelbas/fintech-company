@@ -4,6 +4,7 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.ClientService;
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
+import com.academy.fintech.origination.public_interface.application.ApplicationService;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
 import com.academy.fintech.origination.public_interface.application.exception.ApplicationDuplicateException;
