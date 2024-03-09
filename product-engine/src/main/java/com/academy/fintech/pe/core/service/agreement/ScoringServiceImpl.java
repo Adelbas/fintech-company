@@ -5,6 +5,7 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementServi
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.enums.AgreementStatus;
 import com.academy.fintech.pe.public_interface.agreement.AgreementMapper;
+import com.academy.fintech.pe.public_interface.scoring.ScoringService;
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataRequestDto;
 import com.academy.fintech.pe.public_interface.scoring.dto.ScoringDataResponseDto;
 import jakarta.transaction.Transactional;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class ScoringServiceImpl implements ScoringService{
+public class ScoringServiceImpl implements ScoringService {
 
     private final AgreementService agreementService;
 

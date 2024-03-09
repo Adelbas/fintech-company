@@ -4,7 +4,7 @@ import com.academy.fintech.pe.AgreementActivationRequest;
 import com.academy.fintech.pe.AgreementRequest;
 import com.academy.fintech.pe.AgreementResponse;
 import com.academy.fintech.pe.PaymentScheduleResponse;
-import com.academy.fintech.pe.core.service.agreement.AgreementCreationService;
+import com.academy.fintech.pe.public_interface.agreement.AgreementCreationService;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementActivationDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.PaymentScheduleDto;

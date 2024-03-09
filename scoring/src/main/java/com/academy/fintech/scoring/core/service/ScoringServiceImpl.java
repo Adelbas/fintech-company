@@ -6,6 +6,8 @@ import com.academy.fintech.scoring.core.dto.PaymentSchedulePaymentDto;
 import com.academy.fintech.scoring.core.dto.PaymentStatus;
 import com.academy.fintech.scoring.core.dto.ScoringDataRequestDto;
 import com.academy.fintech.scoring.core.dto.ScoringDataResponseDto;
+import com.academy.fintech.scoring.public_interface.ScoringDataService;
+import com.academy.fintech.scoring.public_interface.ScoringService;
 import com.academy.fintech.scoring.public_interface.dto.ScoringRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

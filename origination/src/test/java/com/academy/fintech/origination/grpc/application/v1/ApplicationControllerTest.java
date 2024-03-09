@@ -4,7 +4,7 @@ import com.academy.fintech.application.ApplicationRequest;
 import com.academy.fintech.application.ApplicationResponse;
 import com.academy.fintech.application.CancelApplicationRequest;
 import com.academy.fintech.application.CancelApplicationResponse;
-import com.academy.fintech.origination.core.service.application.ApplicationService;
+import com.academy.fintech.origination.public_interface.application.ApplicationService;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
 import io.grpc.internal.testing.StreamRecorder;

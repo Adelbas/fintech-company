@@ -5,7 +5,7 @@ import com.academy.fintech.application.ApplicationResponse;
 import com.academy.fintech.application.ApplicationServiceGrpc;
 import com.academy.fintech.application.CancelApplicationRequest;
 import com.academy.fintech.application.CancelApplicationResponse;
-import com.academy.fintech.origination.core.service.application.ApplicationService;
+import com.academy.fintech.origination.public_interface.application.ApplicationService;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
