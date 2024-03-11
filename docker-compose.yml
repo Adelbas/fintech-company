@@ -31,6 +31,10 @@ services:
       - GRPC_PORT=9094
       - SCORING_GRPC_HOST=scoring
       - SCORING_GRPC_PORT=9095
+      - PRODUCT_ENGINE_GRPC_HOST=product-engine
+      - PRODUCT_ENGINE_GRPC_PORT=9090
+      - PAYMENT_GATE_GRPC_HOST=payment-gate
+      - PAYMENT_GATE_GRPC_PORT=9096
       - SCHEDULER_INITIAL_DELAY=PT01M
       - SCHEDULER_INTERVAL=PT01M
       - EMAIL_SENDER_USERNAME=username@gmail.com
@@ -63,6 +67,47 @@ services:
       - DATASOURCE_PASSWORD=postgres
     ports:
       - '9090:9090'
+
+  payment-gate:
+    build: /payment-gate
+    restart: always
+    pull_policy: build
+    depends_on:
+      - db
+    environment:
+      - TZ=Europe/Moscow
+      - SERVER_PORT=8087
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_payment_gate
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - ORIGINATION_GRPC_HOST=origination
+      - ORIGINATION_GRPC_PORT=9094
+      - PRODUCT_ENGINE_GRPC_HOST=product-engine
+      - PRODUCT_ENGINE_GRPC_PORT=9090
+      - MERCHANT_PROVIDER_REST_HOST=merchant-provider
+      - MERCHANT_PROVIDER_REST_PORT=8085
+      - SCHEDULER_INITIAL_DELAY=PT01M
+      - SCHEDULER_INTERVAL=PT02M
+    ports:
+      - '9096:9096'
+      - '8087:8087'
+
+  merchant-provider:
+    build: /merchant-provider
+    restart: always
+    pull_policy: build
+    environment:
+      - TZ=Europe/Moscow
+      - SERVER_PORT=8085
+      - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_merchant_provider
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - PAYMENT_GATE_REST_HOST=payment-gate
+      - PAYMENT_GATE_REST_PORT=8087
+      - SCHEDULER_INITIAL_DELAY=PT01M
+      - SCHEDULER_INTERVAL=PT01M
+    ports:
+      - '8085:8085'
 
   db:
     image: postgres:14.1-alpine
