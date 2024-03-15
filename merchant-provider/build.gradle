@@ -1,0 +1,51 @@
+plugins {
+    alias(libs.plugins.spring)
+    alias(libs.plugins.open.api)
+}
+
+dependencies {
+    implementation libs.javax.annotation
+
+    implementation libs.spring.data.jpa
+    implementation libs.postgresql.driver
+    implementation libs.spring.validation
+
+    implementation libs.open.api.springdoc
+    implementation libs.open.api.generator
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+}
+
+openApiGenerate {
+    generatorName.set("spring")
+    inputSpecRootDirectory.set("$rootDir/merchant-provider/src/main/resources/static/")
+    outputDir.set( "$buildDir/generated")
+    apiPackage.set("com.academy.fintech.mp.api")
+    invokerPackage.set("com.academy.fintech.mp.invoker")
+    modelPackage.set("com.academy.fintech.mp.model")
+    configOptions.set([
+            library                             : "spring-boot",
+//            useOptional                         : "false",
+            openApiNullable                     : "false",
+            interfaceOnly                       : "true",
+            useJakartaEe                        : "true",
+            sourceFolder                        : "",
+            generatedConstructorWithRequiredArgs: "false",
+            additionalModelTypeAnnotations      :"@lombok.NoArgsConstructor\n" +
+                    "@lombok.AllArgsConstructor\n@lombok.Builder(toBuilder = true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)",
+            useTags                             : "true"
+    ])
+}
+
+compileJava.dependsOn tasks.openApiGenerate
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated"
+        }
+    }
+}

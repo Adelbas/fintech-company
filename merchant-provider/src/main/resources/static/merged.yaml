@@ -1,0 +1,17 @@
+---
+servers:
+- url: "http://localhost:8080"
+openapi: "3.0.0"
+paths:
+  /test/payment/status/{id}:
+    $ref: "./test-merchant-provider.yaml#/paths/~1test~1payment~1status~1{id}"
+  /payment/{id}:
+    $ref: "./merchant-provider.yaml#/paths/~1payment~1{id}"
+  /payment/disbursement:
+    $ref: "./merchant-provider.yaml#/paths/~1payment~1disbursement"
+  /payment/loan:
+    $ref: "./merchant-provider.yaml#/paths/~1payment~1loan"
+info:
+  title: "merged spec"
+  description: "merged spec"
+  version: "1.0.0"
