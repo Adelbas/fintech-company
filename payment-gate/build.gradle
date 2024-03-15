@@ -64,6 +64,7 @@ openApiGenerate {
     ])
 }
 
+tasks.openApiGenerate.dependsOn generateProto
 compileJava.dependsOn tasks.openApiGenerate
 
 sourceSets {
