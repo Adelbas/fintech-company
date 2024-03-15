@@ -77,6 +77,7 @@ services:
     environment:
       - TZ=Europe/Moscow
       - SERVER_PORT=8087
+      - GRPC_PORT=9096
       - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_payment_gate
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=postgres
