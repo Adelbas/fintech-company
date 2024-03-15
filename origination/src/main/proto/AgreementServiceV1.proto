@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package com.academy.fintech.pe;
+
+option java_multiple_files = true;
+
+service AgreementService{
+  rpc CreateAgreement(AgreementRequest) returns (AgreementResponse) {}
+  rpc ActivateAgreement(AgreementActivationRequest) returns (PaymentScheduleResponse) {}
+}
+
+message AgreementRequest{
+  string clientId = 1;
+  string productCode = 2;
+  int32 loanTerm = 3;
+  string disbursementAmount = 4;
+  string originationAmount = 5;
+  string interest = 6;
+}
+
+message AgreementResponse{
+  string agreementNumber = 1;
+}
+
+message AgreementActivationRequest{
+  string agreementNumber = 1;
+  string disbursementDate = 2;
+}
+
+message PaymentSchedulePaymentResponse{
+  int32 period = 1;
+  string payment = 2;
+  string interest = 3;
+  string principal = 4;
+  string balance = 5;
+  string paymentDate = 6;
+  string status = 7;
+}
+
+message PaymentScheduleResponse{
+  int32 version = 1;
+  repeated PaymentSchedulePaymentResponse payments = 2;
+}

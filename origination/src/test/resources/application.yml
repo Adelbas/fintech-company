@@ -26,6 +26,14 @@ api:
       grpc:
         host: localhost
         port: 9091
+    product-engine:
+      grpc:
+        host: localhost
+        port: 9092
+    payment-gate:
+      grpc:
+        host: localhost
+        port: 9093
 scoring:
   scheduling:
     initial-delay: PT0.1S
