@@ -5,6 +5,6 @@ import com.academy.fintech.pg.DisbursementStatusRequest;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface PaymentGateGrpcMapper {
+public interface PaymentGateMapper {
     DisbursementStatusUpdateDto toDisbursementStatusUpdateDto(DisbursementStatusRequest disbursementStatusRequest);
 }

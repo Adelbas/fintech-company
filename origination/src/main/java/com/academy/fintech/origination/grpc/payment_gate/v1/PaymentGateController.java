@@ -14,14 +14,14 @@ import org.lognet.springboot.grpc.GRpcService;
 @RequiredArgsConstructor
 public class PaymentGateController extends PaymentGateServiceGrpc.PaymentGateServiceImplBase {
 
-    private final PaymentGateGrpcMapper paymentGateGrpcMapper;
+    private final PaymentGateMapper paymentGateMapper;
 
     private final AgreementService agreementService;
 
     @Override
     public void updateDisbursementStatus(DisbursementStatusRequest request, StreamObserver<Empty> responseObserver) {
         log.info("Got updateDisbursementStatus request from Payment-gate: {}", request);
-        agreementService.updateDisbursementStatus(paymentGateGrpcMapper.toDisbursementStatusUpdateDto(request));
+        agreementService.updateDisbursementStatus(paymentGateMapper.toDisbursementStatusUpdateDto(request));
 
         responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
