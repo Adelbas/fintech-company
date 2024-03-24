@@ -1,5 +1,6 @@
 package com.academy.fintech.mp.core.service.payment;
 
+import com.academy.fintech.mp.core.service.payment.client.payment_gate.PaymentGateClientService;
 import com.academy.fintech.mp.core.service.payment.db.PaymentDbService;
 import com.academy.fintech.mp.core.service.payment.db.entity.Payment;
 import com.academy.fintech.mp.core.service.payment.db.entity.enums.PaymentStatus;
@@ -13,13 +14,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentDbService paymentDbService;
+
+    private final PaymentGateClientService paymentGateClientService;
+
+    private final Map<PaymentType, Consumer<Payment>> paymentHandler = new EnumMap<>(PaymentType.class);
+
+    {
+        paymentHandler.put(PaymentType.LOAN_PAYMENT, this::handleLoanPayment);
+    }
 
     @Override
     public UUID disbursePayment(DisbursementRequestDto disbursementRequestDto) {
@@ -67,8 +79,18 @@ public class PaymentServiceImpl implements PaymentService {
 
         payment.setPaymentStatus(paymentStatusUpdateDto.status());
         payment.setCompletionDate(LocalDateTime.now());
-        //TODO: Next hw: handle Loan payment and send LoanPaymentRequest to Payment-gate
 
         paymentDbService.savePayment(payment);
+        paymentHandler.get(payment.getPaymentType()).accept(payment);
+    }
+
+    private void handleLoanPayment(Payment payment) {
+        paymentGateClientService.loanPayment(
+                LoanPaymentRequestDto.builder()
+                        .clientEmail(payment.getClientEmail())
+                        .agreementNumber(payment.getAgreementNumber())
+                        .amount(payment.getAmount())
+                        .build()
+        );
     }
 }

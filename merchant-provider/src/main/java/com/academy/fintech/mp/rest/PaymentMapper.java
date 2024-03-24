@@ -1,8 +1,8 @@
 package com.academy.fintech.mp.rest;
 
-import com.academy.fintech.mp.model.LoanPaymentRequest;
-import com.academy.fintech.mp.model.PaymentDisbursementRequest;
-import com.academy.fintech.mp.model.StatusCheckResponse;
+import com.academy.fintech.mp.server.model.LoanPaymentRequest;
+import com.academy.fintech.mp.server.model.PaymentDisbursementRequest;
+import com.academy.fintech.mp.server.model.StatusCheckResponse;
 import com.academy.fintech.mp.public_interface.payment.dto.DisbursementRequestDto;
 import com.academy.fintech.mp.public_interface.payment.dto.LoanPaymentRequestDto;
 import com.academy.fintech.mp.public_interface.payment.dto.StatusCheckResponseDto;

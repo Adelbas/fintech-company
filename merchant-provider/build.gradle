@@ -1,3 +1,5 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     alias(libs.plugins.spring)
     alias(libs.plugins.open.api)
@@ -17,22 +19,24 @@ dependencies {
     annotationProcessor libs.mapstruct.processor
 }
 
-openApiGenerate {
+tasks.register('generateServerCode', GenerateTask) {
     generatorName.set("spring")
-    inputSpecRootDirectory.set("$rootDir/merchant-provider/src/main/resources/static/")
-    outputDir.set( "$buildDir/generated")
-    apiPackage.set("com.academy.fintech.mp.api")
-    invokerPackage.set("com.academy.fintech.mp.invoker")
-    modelPackage.set("com.academy.fintech.mp.model")
+    inputSpecRootDirectory.set("$rootDir/merchant-provider/src/main/resources/static/server")
+    outputDir.set("$buildDir/generated/openapi/server")
+    apiPackage.set("com.academy.fintech.mp.server.api")
+    invokerPackage.set("com.academy.fintech.mp.server.invoker")
+    modelPackage.set("com.academy.fintech.mp.server.model")
+    setGenerateModelTests(Boolean.FALSE)
+    setGenerateApiTests(Boolean.FALSE)
     configOptions.set([
             library                             : "spring-boot",
-//            useOptional                         : "false",
+            useOptional                         : "false",
             openApiNullable                     : "false",
             interfaceOnly                       : "true",
             useJakartaEe                        : "true",
             sourceFolder                        : "",
             generatedConstructorWithRequiredArgs: "false",
-            additionalModelTypeAnnotations      :"@lombok.NoArgsConstructor\n" +
+            additionalModelTypeAnnotations      : "@lombok.NoArgsConstructor\n" +
                     "@lombok.AllArgsConstructor\n@lombok.Builder(toBuilder = true)\n" +
                     "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true)\n" +
                     "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)",
@@ -40,7 +44,31 @@ openApiGenerate {
     ])
 }
 
-compileJava.dependsOn tasks.openApiGenerate
+tasks.register('generateClientCode', GenerateTask) {
+    generatorName.set("java")
+    inputSpecRootDirectory.set("$rootDir/merchant-provider/src/main/resources/static/client")
+    outputDir.set( "$buildDir/generated/openapi/client")
+    apiPackage.set("com.academy.fintech.mp.client.api")
+    invokerPackage.set("com.academy.fintech.mp.client.invoker")
+    modelPackage.set("com.academy.fintech.mp.client.model")
+    setGenerateModelTests(Boolean.FALSE)
+    setGenerateApiTests(Boolean.FALSE)
+    configOptions.set([
+            library                             : "resttemplate",
+            useOptional                         : "false",
+            openApiNullable                     : "false",
+            interfaceOnly                       : "true",
+            useJakartaEe                        : "true",
+            sourceFolder                        : "",
+            generatedConstructorWithRequiredArgs: "false",
+            additionalModelTypeAnnotations      :"@lombok.AllArgsConstructor\n@lombok.Builder(toBuilder = true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)",
+            useTags                             : "true"
+    ])
+}
+
+compileJava.dependsOn tasks.generateServerCode, tasks.generateClientCode
 
 sourceSets {
     main {

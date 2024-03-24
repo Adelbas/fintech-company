@@ -1,6 +1,6 @@
 package com.academy.fintech.mp.rest;
 
-import com.academy.fintech.mp.api.TestApi;
+import com.academy.fintech.mp.server.api.TestApi;
 import com.academy.fintech.mp.core.service.payment.db.entity.enums.PaymentStatus;
 import com.academy.fintech.mp.public_interface.payment.PaymentService;
 import com.academy.fintech.mp.public_interface.payment.dto.PaymentStatusUpdateDto;
@@ -24,7 +24,7 @@ public class TestController implements TestApi {
     private final PaymentService paymentService;
 
     @Override
-    public ResponseEntity<Void> updateStatus(UUID id, com.academy.fintech.mp.model.PaymentStatus status) {
+    public ResponseEntity<Void> updateStatus(UUID id, com.academy.fintech.mp.server.model.PaymentStatus status) {
         log.info("Got status update request:\nid: {}\nstatus: {}",id, status);
         paymentService.updateStatus(
                 PaymentStatusUpdateDto.builder()
