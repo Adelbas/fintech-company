@@ -74,5 +74,13 @@ public class Agreement {
 
     @OneToMany(cascade = CascadeType.MERGE, mappedBy = "agreement")
     private List<PaymentSchedule> paymentSchedules;
+
+    @Builder.Default
+    @Column(name = "account_balance", nullable = false)
+    private BigDecimal accountBalance = BigDecimal.ZERO;
+
+    @Builder.Default
+    @Column(name = "overdue_balance", nullable = false)
+    private BigDecimal overdueBalance = BigDecimal.ZERO;
 }
 

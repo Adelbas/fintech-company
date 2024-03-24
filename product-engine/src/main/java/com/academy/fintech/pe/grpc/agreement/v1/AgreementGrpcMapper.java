@@ -2,9 +2,11 @@ package com.academy.fintech.pe.grpc.agreement.v1;
 
 import com.academy.fintech.pe.AgreementActivationRequest;
 import com.academy.fintech.pe.AgreementRequest;
+import com.academy.fintech.pe.LoanPaymentRequest;
 import com.academy.fintech.pe.PaymentScheduleResponse;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementActivationDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementDto;
+import com.academy.fintech.pe.public_interface.agreement.dto.LoanPaymentRequestDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.PaymentScheduleDto;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
@@ -21,4 +23,6 @@ public interface AgreementGrpcMapper {
 
     @Mapping(target = "paymentsList", source = "payments")
     PaymentScheduleResponse toPaymentScheduleResponse(PaymentScheduleDto paymentScheduleDto);
+
+    LoanPaymentRequestDto toLoanPaymentRequestDto(LoanPaymentRequest loanPaymentRequest);
 }

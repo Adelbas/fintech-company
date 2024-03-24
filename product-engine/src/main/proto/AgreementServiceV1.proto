@@ -1,4 +1,5 @@
 syntax = "proto3";
+import "google/protobuf/empty.proto";
 
 package com.academy.fintech.pe;
 
@@ -7,6 +8,7 @@ option java_multiple_files = true;
 service AgreementService{
   rpc CreateAgreement(AgreementRequest) returns (AgreementResponse) {}
   rpc ActivateAgreement(AgreementActivationRequest) returns (PaymentScheduleResponse) {}
+  rpc HandleLoanPayment(LoanPaymentRequest) returns (google.protobuf.Empty) {}
 }
 
 message AgreementRequest{
@@ -40,4 +42,9 @@ message PaymentSchedulePaymentResponse{
 message PaymentScheduleResponse{
   int32 version = 1;
   repeated PaymentSchedulePaymentResponse payments = 2;
+}
+
+message LoanPaymentRequest{
+  string agreementNumber = 1;
+  string amount = 2;
 }
