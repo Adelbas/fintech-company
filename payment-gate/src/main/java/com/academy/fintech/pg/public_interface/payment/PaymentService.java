@@ -7,4 +7,6 @@ public interface PaymentService {
     void sendMoney(PaymentRequestDto paymentRequestDto);
 
     void checkPaymentStatus(Payment payment);
+
+    void handleLoanPayment(PaymentRequestDto paymentRequestDto);
 }

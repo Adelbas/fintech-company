@@ -2,6 +2,7 @@ package com.academy.fintech.pg.core.service.payment;
 
 import com.academy.fintech.pg.core.calculation.payment.PaymentUtils;
 import com.academy.fintech.pg.core.service.payment.client.origination.OriginationClientService;
+import com.academy.fintech.pg.core.service.payment.client.product_engine.ProductEngineClientService;
 import com.academy.fintech.pg.core.service.payment.db.PaymentDbService;
 import com.academy.fintech.pg.core.service.payment.db.entity.Payment;
 import com.academy.fintech.pg.core.service.payment.db.entity.enums.PaymentStatus;
@@ -31,6 +32,8 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentDbService paymentDbService;
 
     private final OriginationClientService originationClientService;
+
+    private final ProductEngineClientService productEngineClientService;
 
     /**
      * Sends request to Provider and gets UUID from response to check payment status in future.
@@ -108,5 +111,10 @@ public class PaymentServiceImpl implements PaymentService {
                 .completionDate(payment.getPaymentStatusUpdateDate())
                 .build()
         );
+    }
+
+    @Override
+    public void handleLoanPayment(PaymentRequestDto paymentRequestDto) {
+        productEngineClientService.handleLoanPayment(paymentRequestDto);
     }
 }

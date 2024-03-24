@@ -1,0 +1,11 @@
+---
+servers:
+- url: "http://localhost:8080"
+openapi: "3.0.0"
+paths:
+  /payment/loan:
+    $ref: "./payment-gate.yaml#/paths/~1payment~1loan"
+info:
+  title: "merged spec"
+  description: "merged spec"
+  version: "1.0.0"

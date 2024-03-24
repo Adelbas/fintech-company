@@ -4,8 +4,8 @@ import com.academy.fintech.pg.core.service.merchant_provider.client.rest.Merchan
 import com.academy.fintech.pg.public_interface.merchant_provider.dto.PaymentResponseDto;
 import com.academy.fintech.pg.public_interface.merchant_provider.dto.StatusCheckRequest;
 import com.academy.fintech.pg.public_interface.payment.dto.PaymentRequestDto;
-import com.academy.fintech.model.PaymentDisbursementRequest;
-import com.academy.fintech.model.PaymentResponse;
+import com.academy.fintech.pg.client.model.PaymentDisbursementRequest;
+import com.academy.fintech.pg.client.model.PaymentResponse;
 import com.academy.fintech.pg.public_interface.merchant_provider.dto.StatusCheckResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class MerchantProviderClientService {
 
     public StatusCheckResponse checkResponse (StatusCheckRequest statusCheckRequest) {
         log.info("Sending check status request to Provider: {}", statusCheckRequest);
-        com.academy.fintech.model.StatusCheckResponse statusCheckResponse = merchantProviderRestClient.getPaymentInfo(statusCheckRequest.statusCheckId());
+        com.academy.fintech.pg.client.model.StatusCheckResponse statusCheckResponse = merchantProviderRestClient.getPaymentInfo(statusCheckRequest.statusCheckId());
 
         log.info("Got status response: {}", statusCheckResponse);
 

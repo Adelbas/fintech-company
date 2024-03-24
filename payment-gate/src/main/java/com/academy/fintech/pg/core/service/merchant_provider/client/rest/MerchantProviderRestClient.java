@@ -1,6 +1,6 @@
 package com.academy.fintech.pg.core.service.merchant_provider.client.rest;
 
-import com.academy.fintech.api.PaymentsApi;
+import com.academy.fintech.pg.client.api.PaymentsApi;
 import org.springframework.stereotype.Component;
 
 @Component
