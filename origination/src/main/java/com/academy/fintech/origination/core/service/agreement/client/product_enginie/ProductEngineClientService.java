@@ -3,6 +3,7 @@ package com.academy.fintech.origination.core.service.agreement.client.product_en
 import com.academy.fintech.origination.core.service.agreement.client.product_enginie.grpc.ProductEngineGrpcClient;
 import com.academy.fintech.origination.public_interface.agreement.dto.AgreementActivationDto;
 import com.academy.fintech.origination.public_interface.agreement.dto.AgreementDto;
+import com.academy.fintech.pe.AgreementActivationRequest;
 import com.academy.fintech.pe.AgreementRequest;
 import com.academy.fintech.pe.AgreementResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,9 @@ public class ProductEngineClientService {
     }
 
     public void activateAgreement(AgreementActivationDto agreementActivationDto) {
-        //TODO: Next hw: send agreement activation request to PE and create BALANCE for agreement
+        log.info("Send agreement activation request to Product-engine: {}", agreementActivationDto);
+        AgreementActivationRequest agreementActivationRequest = productEngineGrpcMapper.toAgreementActivationRequest(agreementActivationDto);
+
+        productEngineGrpcClient.activateAgreement(agreementActivationRequest);
     }
 }

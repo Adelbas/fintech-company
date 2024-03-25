@@ -1,5 +1,7 @@
 package com.academy.fintech.origination.core.service.agreement.client.product_enginie.grpc;
 
+import com.academy.fintech.origination.public_interface.agreement.dto.AgreementActivationDto;
+import com.academy.fintech.pe.AgreementActivationRequest;
 import com.academy.fintech.pe.AgreementRequest;
 import com.academy.fintech.pe.AgreementResponse;
 import com.academy.fintech.pe.AgreementServiceGrpc;
@@ -30,6 +32,15 @@ public class ProductEngineGrpcClient {
             return stub.createAgreement(agreementRequest);
         } catch (StatusRuntimeException e) {
             log.error("Got error from Product-engine by request: {}", agreementRequest, e);
+            throw e;
+        }
+    }
+
+    public void activateAgreement(AgreementActivationRequest agreementActivationRequest) {
+        try {
+            stub.activateAgreement(agreementActivationRequest);
+        } catch (StatusRuntimeException e) {
+            log.error("Got error from Product-engine by request: {}", agreementActivationRequest, e);
             throw e;
         }
     }

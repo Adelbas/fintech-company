@@ -15,4 +15,6 @@ public interface ProductEngineGrpcMapper {
     AgreementRequest toAgreementRequest(AgreementDto agreementDto);
 
     AgreementActivationDto toAgreementActivationDto(AgreementActivationRequest agreementActivationRequest);
+
+    AgreementActivationRequest toAgreementActivationRequest(AgreementActivationDto agreementActivationDto);
 }
