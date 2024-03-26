@@ -9,3 +9,7 @@ spring:
 grpc:
   port: 9090
   enable-reflection: true
+overdue:
+  scheduling:
+    cron-interval: ${SCHEDULER_INTERVAL_IN_CRON}
+    tz: ${TZ}
