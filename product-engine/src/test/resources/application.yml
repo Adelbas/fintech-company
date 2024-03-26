@@ -1,0 +1,14 @@
+spring:
+  liquibase:
+    change-log: classpath:/db/db.changelog-master.yml
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/fintech_product_engine
+    username: postgres
+grpc:
+  port: 9090
+  enable-reflection: true
+overdue:
+  scheduling:
+    cron-interval: 0 0 0 * * *
+    tz: Europe/Moscow

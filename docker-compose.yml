@@ -65,6 +65,7 @@ services:
       - DATASOURCE_URL=jdbc:postgresql://db:5432/fintech_product_engine
       - DATASOURCE_USERNAME=postgres
       - DATASOURCE_PASSWORD=postgres
+      - SCHEDULER_INTERVAL_IN_CRON=0 0 0 * * *
     ports:
       - '9090:9090'
 
