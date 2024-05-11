@@ -5,6 +5,7 @@ import com.academy.fintech.application.ApplicationResponse;
 import com.academy.fintech.application.ApplicationServiceGrpc;
 import com.academy.fintech.application.CancelApplicationRequest;
 import com.academy.fintech.application.CancelApplicationResponse;
+import com.academy.fintech.exporter.ApplicationExporter;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationRepository;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
@@ -39,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
 
 @Testcontainers
-@SpringBootTest(classes = com.academy.fintech.origination.Application.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = {com.academy.fintech.origination.Application.class, ApplicationExporter.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @TestPropertySource(properties = "scoring.scheduling.enabled=false")
 public class ApplicationControllerIntegrationTest {
 

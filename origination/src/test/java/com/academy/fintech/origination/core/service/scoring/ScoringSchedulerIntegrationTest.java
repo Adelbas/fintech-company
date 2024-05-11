@@ -3,6 +3,7 @@ package com.academy.fintech.origination.core.service.scoring;
 import com.academy.fintech.origination.core.configuration.SchedulerConfiguration;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.public_interface.scoring.ScoringService;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
@@ -31,6 +32,9 @@ public class ScoringSchedulerIntegrationTest {
 
     @MockBean
     private ScoringService scoringService;
+
+    @MockBean
+    private ApplicationExportTaskService applicationExportTaskService;
 
     @SpyBean
     private ScoringScheduler scoringScheduler;
@@ -68,6 +72,7 @@ public class ScoringSchedulerIntegrationTest {
                 .untilAsserted(() -> {
                     verify(applicationService, times(10)).saveApplication(any(Application.class));
                     verify(scoringService, times(10)).scoreApplication(any(Application.class));
+                    verify(applicationExportTaskService, times(10)).save(any(), any());
                 });
     }
 }

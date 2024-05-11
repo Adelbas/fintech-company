@@ -5,6 +5,7 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.ClientService;
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
 import com.academy.fintech.origination.public_interface.application.exception.ApplicationDuplicateException;
@@ -34,6 +35,9 @@ public class ApplicationServiceTest {
     @Mock
     private ClientService clientService;
 
+    @Mock
+    private ApplicationExportTaskService applicationExportTaskService;
+
     @InjectMocks
     private ApplicationServiceImpl applicationCreationServiceImpl;
 
@@ -60,7 +64,7 @@ public class ApplicationServiceTest {
                 client.getSalary()
         )).thenReturn(client);
 
-        applicationCreationServiceImpl.createApplication(applicationDto);
+        UUID applicationId = applicationCreationServiceImpl.createApplication(applicationDto);
 
         verify(applicationService).saveApplication(
                 Application.builder()
@@ -69,6 +73,7 @@ public class ApplicationServiceTest {
                         .requestedDisbursementAmount(applicationDto.requestedDisbursementAmount())
                         .build()
         );
+        verify(applicationExportTaskService).save(applicationId, ApplicationStatus.NEW);
     }
 
     @Test
@@ -100,7 +105,7 @@ public class ApplicationServiceTest {
                 applicationDto.requestedDisbursementAmount()
         )).thenReturn(Optional.empty());
 
-        applicationCreationServiceImpl.createApplication(applicationDto);
+        UUID applicationId = applicationCreationServiceImpl.createApplication(applicationDto);
 
         verify(applicationService).saveApplication(
                 Application.builder()
@@ -109,6 +114,7 @@ public class ApplicationServiceTest {
                         .requestedDisbursementAmount(applicationDto.requestedDisbursementAmount())
                         .build()
         );
+        verify(applicationExportTaskService).save(applicationId, ApplicationStatus.NEW);
     }
 
     @Test

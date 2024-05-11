@@ -5,6 +5,7 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
 import com.academy.fintech.origination.core.service.email.EmailService;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.core.service.scoring.client.ScoringClientService;
 import com.academy.fintech.origination.public_interface.agreement.AgreementService;
 import com.academy.fintech.origination.public_interface.agreement.dto.AgreementDto;
@@ -25,6 +26,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +44,9 @@ public class ScoringServiceTest {
 
     @Mock
     private AgreementService agreementService;
+
+    @Mock
+    private ApplicationExportTaskService applicationExportTaskService;
 
     @Spy
     private ApplicationMapper applicationMapper = new ApplicationMapperImpl();
@@ -70,6 +75,7 @@ public class ScoringServiceTest {
         verify(applicationService).saveApplication(application);
         verify(emailService).sendApplicationApprovedEmail(any(ApplicationEmailDto.class));
         verify(agreementService).createAgreement(any(AgreementDto.class));
+        verify(applicationExportTaskService).save(any(), eq(ApplicationStatus.ACCEPTED));
     }
 
     @Test
@@ -92,5 +98,6 @@ public class ScoringServiceTest {
         assertThat(application.getStatus()).isEqualTo(ApplicationStatus.CLOSED);
         verify(applicationService).saveApplication(application);
         verify(emailService).sendApplicationRejectedEmail(any(ApplicationEmailDto.class));
+        verify(applicationExportTaskService).save(any(), eq(ApplicationStatus.CLOSED));
     }
 }
