@@ -18,7 +18,7 @@ spring-test = { module = "org.springframework.boot:spring-boot-starter-test", ve
 spring-validation = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "spring-boot" }
 spring-email = { module ="org.springframework.boot:spring-boot-starter-mail", version.ref = "spring-boot" }
 spring-grpc = { module = "io.github.lognet:grpc-spring-boot-starter", version = "5.1.0" }
-spting-kafka = { module = "org.springframework.kafka:spring-kafka", version = "3.0.16"}
+spring-kafka = { module = "org.springframework.kafka:spring-kafka", version = "3.0.16"}
 
 #Additional libraries
 javax-annotation = { module = "javax.annotation:javax.annotation-api", version = "1.3.2" }
