@@ -1,11 +1,13 @@
 package com.academy.fintech.pe.core.service.agreement;
 
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportStatus;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreement;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.PaymentScheduleService;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.entity.PaymentSchedule;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.entity.PaymentSchedulePayment;
 import com.academy.fintech.pe.core.service.agreement.db.payment_schedule.entity.enums.PaymentStatus;
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportTaskService;
 import com.academy.fintech.pe.public_interface.agreement.AgreementPaymentService;
 import com.academy.fintech.pe.public_interface.agreement.dto.LoanPaymentRequestDto;
 import jakarta.transaction.Transactional;
@@ -25,6 +27,8 @@ public class AgreementPaymentServiceImpl implements AgreementPaymentService {
     private final AgreementService agreementService;
 
     private final PaymentScheduleService paymentScheduleService;
+
+    private final AgreementExportTaskService agreementExportTaskService;
 
     @Override
     public void handleLoanPayment(LoanPaymentRequestDto loanPaymentRequestDto) {
@@ -60,6 +64,7 @@ public class AgreementPaymentServiceImpl implements AgreementPaymentService {
         PaymentSchedule paymentSchedule = paymentScheduleService.getActualPaymentScheduleForAgreement(agreement);
         PaymentSchedulePayment currentPayment = getCurrentPayment(agreement, paymentSchedule);
 
+        BigDecimal oldOverdueBalance = agreement.getOverdueBalance();
         agreement.setOverdueBalance(
                 agreement.getOverdueBalance().add(currentPayment.getPeriodPayment())
         );
@@ -68,8 +73,16 @@ public class AgreementPaymentServiceImpl implements AgreementPaymentService {
 
         if (agreement.getOverdueBalance().equals(BigDecimal.ZERO)) {
             currentPayment.setStatus(PaymentStatus.PAID);
+
+            //If status was OVERDUE, now send ACTIVE
+            if (oldOverdueBalance.compareTo(BigDecimal.ZERO) < 0) {
+                agreementExportTaskService.save(agreement.getAgreementNumber(), AgreementExportStatus.ACTIVE);
+            }
         } else {
             currentPayment.setStatus(PaymentStatus.OVERDUE);
+
+            //Send status OVERDUE
+            agreementExportTaskService.save(agreement.getAgreementNumber(), AgreementExportStatus.OVERDUE);
         }
 
         agreement.setNextPaymentDate(getNextPeriodPaymentDate(paymentSchedule, currentPayment));

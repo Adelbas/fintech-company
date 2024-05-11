@@ -1,5 +1,7 @@
 package com.academy.fintech.pe.core.service.agreement;
 
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportStatus;
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportTaskService;
 import com.academy.fintech.pe.core.calculation.payment_schedule.PaymentScheduleFunctions;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.product.ProductService;
@@ -40,6 +42,8 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
 
     private final ProductService productService;
 
+    private final AgreementExportTaskService agreementExportTaskService;
+
     private final AgreementMapper agreementMapper;
 
     /**
@@ -54,6 +58,7 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
      * @throws InvalidParametersException if agreement validation is failed
      */
     @Override
+    @Transactional
     public UUID createAgreement(AgreementDto agreementDto) {
         Product product = productService.getProduct(agreementDto.productCode());
 
@@ -73,6 +78,7 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
                 .status(AgreementStatus.NEW)
                 .build()
         );
+        agreementExportTaskService.save(agreement.getAgreementNumber(), AgreementExportStatus.NEW);
 
         return agreement.getAgreementNumber();
     }
@@ -142,6 +148,7 @@ public class AgreementCreationServiceImpl implements AgreementCreationService {
         agreement.setStatus(AgreementStatus.ACTIVE);
 
         agreementService.saveAgreement(agreement);
+        agreementExportTaskService.save(agreement.getAgreementNumber(), AgreementExportStatus.ACTIVE);
 
         return agreementMapper.toPaymentScheduleDto(firstPaymentSchedule);
     }
