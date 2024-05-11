@@ -5,6 +5,8 @@ import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreeme
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.enums.AgreementStatus;
 import com.academy.fintech.pe.core.service.agreement.db.product.ProductService;
 import com.academy.fintech.pe.core.service.agreement.db.product.entity.Product;
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportStatus;
+import com.academy.fintech.pe.core.service.export_task.agreement.AgreementExportTaskService;
 import com.academy.fintech.pe.public_interface.agreement.AgreementMapper;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementActivationDto;
 import com.academy.fintech.pe.public_interface.agreement.dto.AgreementDto;
@@ -40,6 +42,9 @@ public class AgreementCreationServiceTest {
 
     @Mock
     private AgreementService agreementService;
+
+    @Mock
+    private AgreementExportTaskService agreementExportTaskService;
 
     @Spy
     private final AgreementMapper agreementMapper = Mappers.getMapper(AgreementMapper.class);
@@ -94,6 +99,7 @@ public class AgreementCreationServiceTest {
         assertThatNoException().isThrownBy(() -> {
             UUID actualAgreementNumber = agreementCreationService.createAgreement(agreementDto);
             assertThat(actualAgreementNumber).isEqualTo(expectedAgreementNumber);
+            verify(agreementExportTaskService).save(expectedAgreementNumber, AgreementExportStatus.NEW);
         });
     }
 
@@ -141,6 +147,7 @@ public class AgreementCreationServiceTest {
         assertThat(paymentSchedulePaymentDto).isNotNull();
         assertThat(paymentSchedulePaymentDto.paymentDate()).isEqualTo(disbursementDate.plusMonths(1));
         verify(agreementService).saveAgreement(agreement);
+        verify(agreementExportTaskService).save(agreement.getAgreementNumber(), AgreementExportStatus.ACTIVE);
     }
 
     private static Stream<Arguments> provideArgumentsForCreateAgreement_whenAgreementIsInvalidTest() {

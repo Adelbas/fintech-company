@@ -1,5 +1,6 @@
 package com.academy.fintech.pe.grpc.agreement.v1;
 
+import com.academy.fintech.exporter.ApplicationExporter;
 import com.academy.fintech.pe.*;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.AgreementService;
 import com.academy.fintech.pe.core.service.agreement.db.agreement.entity.Agreement;
@@ -36,7 +37,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
-@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(classes = {Application.class, ApplicationExporter.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DirtiesContext
 public class AgreementControllerIntegrationTests {
 
