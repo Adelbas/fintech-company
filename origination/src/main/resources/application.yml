@@ -1,4 +1,7 @@
 spring:
+  config:
+    import:
+      - classpath:/application-exporter.yml
   liquibase:
     change-log: classpath:/db/db.changelog-master.yml
   datasource:
@@ -6,6 +9,14 @@ spring:
     url: ${DATASOURCE_URL}
     username: ${DATASOURCE_USERNAME}
     password: ${DATASOURCE_PASSWORD}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+    listener:
+      ack-mode: manual_immediate
   mail:
     host: smtp.gmail.com
     port: 587
