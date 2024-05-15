@@ -10,5 +10,6 @@ import java.util.UUID;
 public record ApplicationStatusUpdatePayload(
         UUID applicationId,
         ApplicationStatus status,
-        LocalDateTime updatedAt
+        LocalDateTime updatedAt,
+        UUID idempotencyKey
 ) { }

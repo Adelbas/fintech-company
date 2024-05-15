@@ -9,5 +9,6 @@ import java.util.UUID;
 public record AgreementStatusUpdatePayload(
     UUID agreementNumber,
     AgreementExportStatus status,
-    LocalDateTime updatedAt
+    LocalDateTime updatedAt,
+    UUID idempotencyKey
 ) { }

@@ -25,6 +25,7 @@ public class AgreementExportTaskService {
                 .agreementNumber(agreementNumber)
                 .status(status)
                 .updatedAt(LocalDateTime.now())
+                .idempotencyKey(UUID.randomUUID())
                 .build();
 
         exportTaskRepository.saveTask(

@@ -26,6 +26,7 @@ public class ApplicationExportTaskService {
                 .applicationId(applicationId)
                 .status(status)
                 .updatedAt(LocalDateTime.now())
+                .idempotencyKey(UUID.randomUUID())
                 .build();
 
         exportTaskRepository.saveTask(
