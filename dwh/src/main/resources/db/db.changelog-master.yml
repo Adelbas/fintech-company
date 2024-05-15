@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: HALT
+      - dbms:
+          type: postgresql
+  - include:
+      file: classpath:/db/changelog/001-create-table-agreement-history.sql
+  - include:
+      file: classpath:/db/changelog/002-create-table-application-history.sql
+  - include:
+      file: classpath:/db/changelog/003-create-table-dead-letter.sql

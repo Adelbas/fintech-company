@@ -1,0 +1,10 @@
+plugins {
+    alias(libs.plugins.spring)
+}
+
+dependencies {
+    implementation libs.spring.data.jpa
+    implementation libs.spring.kafka
+
+    implementation libs.postgresql.driver
+}
