@@ -1,0 +1,102 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+plugins {
+    alias(libs.plugins.spring)
+    alias(libs.plugins.protobuf)
+    alias(libs.plugins.open.api)
+}
+
+dependencies {
+    implementation libs.spring.grpc
+    implementation libs.spring.data.jpa
+    implementation libs.spring.validation
+
+    implementation libs.open.api.springdoc
+    implementation libs.open.api.generator
+
+    implementation libs.postgresql.driver
+    implementation libs.javax.annotation
+
+    implementation libs.mapstruct
+    annotationProcessor libs.mapstruct.processor
+
+    testImplementation libs.spring.test
+    testImplementation libs.assertj
+    testImplementation libs.grpc.test
+    testImplementation libs.testcontainers.jupiter
+    testImplementation libs.testcontainers.postgresql
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.4'
+    }
+
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0'
+        }
+    }
+    generateProtoTasks{
+        all()*.plugins {grpc {}}
+    }
+}
+
+tasks.register('generateServerCode', GenerateTask) {
+    generatorName.set("spring")
+    inputSpecRootDirectory.set("$rootDir/payment-gate/src/main/resources/static/server")
+    outputDir.set("$buildDir/generated/openapi/server")
+    apiPackage.set("com.academy.fintech.pg.server.api")
+    invokerPackage.set("com.academy.fintech.pg.server.invoker")
+    modelPackage.set("com.academy.fintech.pg.server.model")
+    setGenerateModelTests(Boolean.FALSE)
+    setGenerateApiTests(Boolean.FALSE)
+    configOptions.set([
+            library                             : "spring-boot",
+            useOptional                         : "false",
+            openApiNullable                     : "false",
+            interfaceOnly                       : "true",
+            useJakartaEe                        : "true",
+            sourceFolder                        : "",
+            generatedConstructorWithRequiredArgs: "false",
+            additionalModelTypeAnnotations      : "@lombok.NoArgsConstructor\n" +
+                    "@lombok.AllArgsConstructor\n@lombok.Builder(toBuilder = true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)",
+            useTags                             : "true"
+    ])
+}
+
+tasks.register('generateClientCode', GenerateTask) {
+    generatorName.set("java")
+    inputSpecRootDirectory.set("$rootDir/payment-gate/src/main/resources/static/client")
+    outputDir.set( "$buildDir/generated/openapi/client")
+    apiPackage.set("com.academy.fintech.pg.client.api")
+    invokerPackage.set("com.academy.fintech.pg.client.invoker")
+    modelPackage.set("com.academy.fintech.pg.client.model")
+    setGenerateModelTests(Boolean.FALSE)
+    setGenerateApiTests(Boolean.FALSE)
+    configOptions.set([
+            library                             : "resttemplate",
+            useOptional                         : "false",
+            openApiNullable                     : "false",
+            interfaceOnly                       : "true",
+            useJakartaEe                        : "true",
+            sourceFolder                        : "",
+            generatedConstructorWithRequiredArgs: "false",
+            additionalModelTypeAnnotations      :"@lombok.AllArgsConstructor\n@lombok.Builder(toBuilder = true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown=true)\n" +
+                    "@com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)",
+            useTags                             : "true"
+    ])
+}
+
+compileJava.dependsOn generateProto, tasks.generateServerCode, tasks.generateClientCode
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated"
+        }
+    }
+}

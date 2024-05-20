@@ -1,0 +1,175 @@
+openapi: 3.0.0
+info:
+  title: Merchant provider
+  version: 0.0.1
+servers:
+  - url: http://localhost:8085/api/v1
+    description: Development server
+paths:
+  /payment/{id}:
+    get:
+      summary: Get actual information about any payment
+      tags:
+        - Payments
+      operationId: getPaymentInfo
+      parameters:
+        - name: id
+          in: path
+          description: Payment UUID
+          required: true
+          schema:
+            type: string
+            format: uuid
+            example: e16d24c5-2a4f-4e56-897c-f18c63e9764e
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatusCheckResponse'
+        'default':
+          description: Operation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /payment/loan:
+    post:
+      summary: Make a loan payment
+      tags:
+        - Payments
+      operationId: makeLoanPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoanPaymentRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        'default':
+          description: Operation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /payment/disbursement:
+    post:
+      summary: Make a disbursement
+      tags:
+        - Payments
+      operationId: disburse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentDisbursementRequest'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        'default':
+          description: Operation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+components:
+  schemas:
+    LoanPaymentRequest:
+      type: object
+      required:
+        - client_email
+        - agreement_number
+        - amount
+      properties:
+        client_email:
+          type: string
+          format: email
+          example: test@mail.ru
+          description: The user who made the payment
+        agreement_number:
+          type: string
+          format: uuid
+          example: 9e04bac4-69de-429c-ac03-3fc22f6c94e3
+          description: Agreement to which the payment is linked
+        amount:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          example: 60250
+          description: Payment amount
+
+    PaymentResponse:
+      type: object
+      required:
+        - payment_id
+      properties:
+        payment_id:
+          description: UUID to check payment status in future
+          type: string
+          format: uuid
+          example: e16d24c5-2a4f-4e56-897c-f18c63e9764e
+
+
+    PaymentDisbursementRequest:
+      type: object
+      required:
+        - client_email
+        - amount
+      properties:
+        client_email:
+          type: string
+          format: email
+          example: test@mail.ru
+          description: The user to whom the payment is being sent
+        amount:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+          example: 60250
+          description: Payment amount
+
+    PaymentStatus:
+      type: string
+      description: Actual payment status
+      enum:
+        - PENDING
+        - COMPLETED
+        - FAILED
+
+    StatusCheckResponse:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        completion_date:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: Payment not found

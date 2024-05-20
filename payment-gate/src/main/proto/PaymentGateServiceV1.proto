@@ -1,0 +1,23 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+package com.academy.fintech.pg;
+
+option java_multiple_files = true;
+
+service PaymentGateService{
+  rpc disburseAmount(PaymentRequest) returns (google.protobuf.Empty) {}
+  rpc updateDisbursementStatus(DisbursementStatusRequest) returns (google.protobuf.Empty) {}
+}
+
+message PaymentRequest{
+  string clientEmail = 1;
+  string agreementNumber = 2;
+  string amount = 3;
+}
+
+message DisbursementStatusRequest{
+  string agreementNumber = 1;
+  bool isDisbursementCompletedSuccessfully = 2;
+  string disbursementDate = 3;
+}

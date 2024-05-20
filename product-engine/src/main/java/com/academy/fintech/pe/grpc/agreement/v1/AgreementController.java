@@ -5,9 +5,12 @@ import com.academy.fintech.pe.AgreementActivationRequest;
 import com.academy.fintech.pe.AgreementRequest;
 import com.academy.fintech.pe.AgreementResponse;
 import com.academy.fintech.pe.AgreementServiceGrpc;
+import com.academy.fintech.pe.LoanPaymentRequest;
 import com.academy.fintech.pe.PaymentScheduleResponse;
 import com.academy.fintech.pe.public_interface.agreement.AgreementCreationService;
+import com.academy.fintech.pe.public_interface.agreement.AgreementPaymentService;
 import com.academy.fintech.pe.public_interface.agreement.dto.PaymentScheduleDto;
+import com.google.protobuf.Empty;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +31,8 @@ public class AgreementController extends AgreementServiceGrpc.AgreementServiceIm
 
     private final AgreementCreationService agreementCreationService;
 
+    private final AgreementPaymentService agreementPaymentService;
+
     private final AgreementGrpcMapper agreementGrpcMapper;
 
     @Override
@@ -45,6 +50,14 @@ public class AgreementController extends AgreementServiceGrpc.AgreementServiceIm
         PaymentScheduleResponse paymentScheduleResponse = agreementGrpcMapper.toPaymentScheduleResponse(paymentScheduleDto);
 
         responseObserver.onNext(paymentScheduleResponse);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void handleLoanPayment(LoanPaymentRequest request, StreamObserver<Empty> responseObserver) {
+        agreementPaymentService.handleLoanPayment(agreementGrpcMapper.toLoanPaymentRequestDto(request));
+
+        responseObserver.onNext(Empty.getDefaultInstance());
         responseObserver.onCompleted();
     }
 }

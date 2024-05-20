@@ -5,6 +5,8 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.email.EmailService;
 import com.academy.fintech.origination.core.service.scoring.client.ScoringClientService;
+import com.academy.fintech.origination.public_interface.agreement.AgreementService;
+import com.academy.fintech.origination.public_interface.agreement.dto.AgreementDto;
 import com.academy.fintech.origination.public_interface.application.ApplicationMapper;
 import com.academy.fintech.origination.public_interface.scoring.ScoringRequestDto;
 import com.academy.fintech.origination.public_interface.scoring.ScoringResponseDto;
@@ -44,10 +46,12 @@ public class ScoringServiceImpl implements ScoringService {
 
     private final EmailService emailService;
 
+    private final AgreementService agreementService;
+
     /**
      * Provides async application scoring.
      * Gets scoring result from {@link ScoringClientService}.
-     * If score is more than zero updates application status to {@link ApplicationStatus#ACTIVE}
+     * If score is more than zero updates application status to {@link ApplicationStatus#ACTIVE} and sends request to create agreement
      * If score is less or equal to zero updates application status to {@link ApplicationStatus#CLOSED}
      * @param application application to score
      */
@@ -77,6 +81,19 @@ public class ScoringServiceImpl implements ScoringService {
         log.info("Set status {} for application {}", application.getStatus().name(), application.getApplicationId());
         applicationService.saveApplication(application);
         sendApplicationStatusEmail(application);
+
+        if (ApplicationStatus.ACCEPTED.equals(application.getStatus())) {
+            agreementService.createAgreement(
+                    AgreementDto.builder()
+                            .clientId(application.getClient().getClientId())
+                            .productCode(DEFAULT_PRODUCT_CODE)
+                            .interest(DEFAULT_INTEREST)
+                            .disbursementAmount(application.getRequestedDisbursementAmount())
+                            .originationAmount(DEFAULT_ORIGINATION_AMOUNT)
+                            .loanTerm(DEFAULT_LOAN_TERM)
+                            .build()
+            );
+        }
     }
 
     /**

@@ -1,0 +1,19 @@
+server:
+  port: ${SERVER_PORT}
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
+  liquibase:
+    enabled: false
+  jpa:
+    hibernate:
+      ddl-auto: update
+api:
+  client:
+    payment-gate:
+      rest:
+        host: ${PAYMENT_GATE_REST_HOST}
+        port: ${PAYMENT_GATE_REST_PORT}

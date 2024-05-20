@@ -7,6 +7,7 @@ test-containers = "1.19.1"
 [plugins]
 spring = { id = "org.springframework.boot", version.ref = "spring-boot" }
 protobuf = { id = "com.google.protobuf", version = "0.9.4" }
+open-api = { id = "org.openapi.generator", version = "7.3.0"}
 
 [libraries]
 #Spring Boot libraries
@@ -25,6 +26,10 @@ liquibase = { module = "org.liquibase:liquibase-core", version = "4.22.0" }
 postgresql-driver = { module = "org.postgresql:postgresql", version = "42.6.0" }
 mapstruct = { module = "org.mapstruct:mapstruct", version.ref = "mapstruct" }
 mapstruct-processor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstruct" }
+
+#Open-api libraries
+open-api-springdoc = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version = "2.2.0"}
+open-api-generator = { module = "org.openapitools:openapi-generator-gradle-plugin", version = "7.3.0"}
 
 #Grpc libraries
 grpc-test = { module = "io.grpc:grpc-testing", version.ref = "grpc" }

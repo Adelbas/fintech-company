@@ -6,6 +6,8 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
 import com.academy.fintech.origination.core.service.email.EmailService;
 import com.academy.fintech.origination.core.service.scoring.client.ScoringClientService;
+import com.academy.fintech.origination.public_interface.agreement.AgreementService;
+import com.academy.fintech.origination.public_interface.agreement.dto.AgreementDto;
 import com.academy.fintech.origination.public_interface.application.ApplicationMapper;
 import com.academy.fintech.origination.public_interface.application.ApplicationMapperImpl;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationEmailDto;
@@ -38,6 +40,9 @@ public class ScoringServiceTest {
     @Mock
     private EmailService emailService;
 
+    @Mock
+    private AgreementService agreementService;
+
     @Spy
     private ApplicationMapper applicationMapper = new ApplicationMapperImpl();
 
@@ -64,6 +69,7 @@ public class ScoringServiceTest {
         assertThat(application.getStatus()).isEqualTo(ApplicationStatus.ACCEPTED);
         verify(applicationService).saveApplication(application);
         verify(emailService).sendApplicationApprovedEmail(any(ApplicationEmailDto.class));
+        verify(agreementService).createAgreement(any(AgreementDto.class));
     }
 
     @Test

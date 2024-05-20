@@ -13,3 +13,5 @@ databaseChangeLog:
       file: classpath:/db/changelog/004-create-table-payment-schedule.sql
   - include:
       file: classpath:/db/changelog/005-create-table-payment-schedule-payment.sql
+  - include:
+      file: classpath:/db/changelog/006-add-balances-to-agreement.sql

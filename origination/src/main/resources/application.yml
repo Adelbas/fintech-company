@@ -26,6 +26,14 @@ api:
       grpc:
         host: ${SCORING_GRPC_HOST}
         port: ${SCORING_GRPC_PORT}
+    product-engine:
+      grpc:
+        host: ${PRODUCT_ENGINE_GRPC_HOST}
+        port: ${PRODUCT_ENGINE_GRPC_PORT}
+    payment-gate:
+      grpc:
+        host: ${PAYMENT_GATE_GRPC_HOST}
+        port: ${PAYMENT_GATE_GRPC_PORT}
 scoring:
   scheduling:
     initial-delay: ${SCHEDULER_INITIAL_DELAY}
