@@ -14,7 +14,6 @@ import com.academy.fintech.pg.public_interface.merchant_provider.dto.StatusCheck
 import com.academy.fintech.pg.public_interface.payment.PaymentService;
 import com.academy.fintech.pg.public_interface.payment.dto.PaymentRequestDto;
 import com.academy.fintech.pg.public_interface.payment.dto.UpdatePaymentStatusDto;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -67,7 +66,6 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Async
     @Override
-    @Transactional
     public void checkPaymentStatus(Payment payment) {
         StatusCheckResponse statusCheckResponse = providerService.checkPaymentStatus(
                 StatusCheckRequest.builder()
