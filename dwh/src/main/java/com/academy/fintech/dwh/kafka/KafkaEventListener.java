@@ -32,8 +32,13 @@ public class KafkaEventListener {
     private final ObjectMapper objectMapper;
 
     @RetryableTopic(
-            attempts = "4", topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
-            backoff = @Backoff(delay = 2000, multiplier = 2, maxDelay = 5000)
+            attempts = "4",
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+            backoff = @Backoff(
+                    delay = 2000,
+                    multiplier = 2,
+                    maxDelay = 5000
+            )
     )
     @KafkaListener(topics = {"${consumer.agreement-status.topic}"})
     public void processAgreementStatusEvent(ConsumerRecord<String, String> eventMessage, Acknowledgment ack) throws JsonProcessingException {
@@ -50,8 +55,13 @@ public class KafkaEventListener {
     }
 
     @RetryableTopic(
-            attempts = "4", topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
-            backoff = @Backoff(delay = 2000, multiplier = 2, maxDelay = 5000)
+            attempts = "4",
+            topicSuffixingStrategy = TopicSuffixingStrategy.SUFFIX_WITH_INDEX_VALUE,
+            backoff = @Backoff(
+                    delay = 2000,
+                    multiplier = 2,
+                    maxDelay = 5000
+            )
     )
     @KafkaListener(topics = {"${consumer.application-status.topic}"})
     public void processApplicationStatusEvent(ConsumerRecord<String, String> eventMessage, Acknowledgment ack) throws JsonProcessingException {
