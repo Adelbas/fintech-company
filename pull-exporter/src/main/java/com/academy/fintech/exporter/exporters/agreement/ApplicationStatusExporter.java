@@ -23,6 +23,12 @@ public class ApplicationStatusExporter implements Exporter {
 
     @Value("${exporter.application-status.topic}")
     private String applicationStatusTopicName;
+
+    @Override
+    public TaskType getType() {
+        return TaskType.APPLICATION_STATUS_UPDATE;
+    }
+
     @Override
     public void export() {
         List<ExportTask> tasks = exportTaskService.findByTypeAndStatusNew(getType());
@@ -39,11 +45,6 @@ public class ApplicationStatusExporter implements Exporter {
                 processSendingError(task, e);
             }
         }
-    }
-
-    @Override
-    public TaskType getType() {
-        return TaskType.APPLICATION_STATUS_UPDATE;
     }
 
     private void processSendingError(ExportTask task, Throwable t) {

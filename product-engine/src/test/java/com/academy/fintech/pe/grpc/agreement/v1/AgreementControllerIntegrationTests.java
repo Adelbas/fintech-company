@@ -37,7 +37,10 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Testcontainers
-@SpringBootTest(classes = {Application.class, ApplicationExporter.class}, webEnvironment = SpringBootTest.WebEnvironment.NONE)
+@SpringBootTest(
+        classes = {Application.class, ApplicationExporter.class},
+        webEnvironment = SpringBootTest.WebEnvironment.NONE
+)
 @DirtiesContext
 public class AgreementControllerIntegrationTests {
 

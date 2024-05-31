@@ -23,6 +23,12 @@ public class AgreementStatusExporter implements Exporter {
 
     @Value("${exporter.agreement-status.topic}")
     private String agreementStatusTopicName;
+
+    @Override
+    public TaskType getType() {
+        return TaskType.AGREEMENT_STATUS_UPDATE;
+    }
+
     @Override
     public void export() {
         List<ExportTask> tasks = exportTaskService.findByTypeAndStatusNew(getType());
@@ -39,11 +45,6 @@ public class AgreementStatusExporter implements Exporter {
                 processSendingError(task, e);
             }
         }
-    }
-
-    @Override
-    public TaskType getType() {
-        return TaskType.AGREEMENT_STATUS_UPDATE;
     }
 
     private void processSendingError(ExportTask task, Throwable t) {
