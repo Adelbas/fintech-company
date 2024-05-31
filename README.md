@@ -1,5 +1,6 @@
 # Fintech-company
 Microservice application
+System architecture: https://miro.com/app/board/uXjVNlaDZos=/?share_link_id=20095406867
 ## Launch
 1. `git clone -b develop-product-engine https://github.com/central-university-dev/fintech-company-Adelbas.git`
 2. Go to project folder
