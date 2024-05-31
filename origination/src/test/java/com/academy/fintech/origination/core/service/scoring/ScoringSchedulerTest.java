@@ -2,6 +2,8 @@ package com.academy.fintech.origination.core.service.scoring;
 
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
+import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.public_interface.scoring.ScoringService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -27,6 +30,9 @@ public class ScoringSchedulerTest {
 
     @Mock
     private ScoringService scoringService;
+
+    @Mock
+    private ApplicationExportTaskService applicationExportTaskService;
 
     @InjectMocks
     private ScoringScheduler scoringScheduler;
@@ -54,5 +60,6 @@ public class ScoringSchedulerTest {
 
         verify(applicationService, times(applicationsCount)).saveApplication(any(Application.class));
         verify(scoringService, times(applicationsCount)).scoreApplication(any(Application.class));
+        verify(applicationExportTaskService, times(applicationsCount)).save(any(), eq(ApplicationStatus.SCORING));
     }
 }

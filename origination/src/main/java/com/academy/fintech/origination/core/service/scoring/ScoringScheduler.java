@@ -3,7 +3,9 @@ package com.academy.fintech.origination.core.service.scoring;
 import com.academy.fintech.origination.core.service.application.db.application.ApplicationService;
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.public_interface.scoring.ScoringService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -25,6 +27,9 @@ public class ScoringScheduler {
 
     private final ScoringService scoringService;
 
+    private final ApplicationExportTaskService applicationExportTaskService;
+
+    @Transactional
     @Scheduled(fixedRateString = "${scoring.scheduling.interval}", initialDelayString = "${scoring.scheduling.initial-delay}")
     public void processNewApplications() {
         log.info("Checking database for new applications");
@@ -37,6 +42,7 @@ public class ScoringScheduler {
             log.info("Set status {} for application {}", ApplicationStatus.SCORING.name(), application.getApplicationId());
             application.setStatus(ApplicationStatus.SCORING);
             applicationService.saveApplication(application);
+            applicationExportTaskService.save(application.getApplicationId(), application.getStatus());
 
             scoringService.scoreApplication(application);
         }

@@ -4,6 +4,7 @@ import com.academy.fintech.origination.core.service.application.db.application.e
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.application.db.client.ClientService;
 import com.academy.fintech.origination.core.service.application.db.client.entity.Client;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.public_interface.application.ApplicationService;
 import com.academy.fintech.origination.public_interface.application.dto.ApplicationDto;
 import com.academy.fintech.origination.public_interface.application.dto.CancelApplicationDto;
@@ -29,6 +30,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final com.academy.fintech.origination.core.service.application.db.application.ApplicationService applicationService;
 
     private final ClientService clientService;
+
+    private final ApplicationExportTaskService applicationExportTaskService;
 
     /**
      * Provides application creation.
@@ -66,6 +69,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                 .build();
 
         applicationService.saveApplication(application);
+        applicationExportTaskService.save(application.getApplicationId(), application.getStatus());
         return application.getApplicationId();
     }
 

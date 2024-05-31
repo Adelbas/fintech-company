@@ -1,0 +1,11 @@
+exporter:
+  dispatcher:
+    stalled-seconds-rate: 90
+    export-seconds-rate: 60
+    retry-stalled:
+      passed-minutes-in-processing-to-retry: 10
+    tz: Europe/Moscow
+  agreement-status:
+    topic: "v1.agreement-status"
+  application-status:
+    topic: "v1.application-status"

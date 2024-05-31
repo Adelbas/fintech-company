@@ -4,6 +4,7 @@ import com.academy.fintech.origination.core.service.application.db.application.A
 import com.academy.fintech.origination.core.service.application.db.application.entity.Application;
 import com.academy.fintech.origination.core.service.application.db.application.entity.enums.ApplicationStatus;
 import com.academy.fintech.origination.core.service.email.EmailService;
+import com.academy.fintech.origination.core.service.export_task.application.ApplicationExportTaskService;
 import com.academy.fintech.origination.core.service.scoring.client.ScoringClientService;
 import com.academy.fintech.origination.public_interface.agreement.AgreementService;
 import com.academy.fintech.origination.public_interface.agreement.dto.AgreementDto;
@@ -11,6 +12,7 @@ import com.academy.fintech.origination.public_interface.application.ApplicationM
 import com.academy.fintech.origination.public_interface.scoring.ScoringRequestDto;
 import com.academy.fintech.origination.public_interface.scoring.ScoringResponseDto;
 import com.academy.fintech.origination.public_interface.scoring.ScoringService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -48,6 +50,8 @@ public class ScoringServiceImpl implements ScoringService {
 
     private final AgreementService agreementService;
 
+    private final ApplicationExportTaskService applicationExportTaskService;
+
     /**
      * Provides async application scoring.
      * Gets scoring result from {@link ScoringClientService}.
@@ -57,6 +61,7 @@ public class ScoringServiceImpl implements ScoringService {
      */
     @Async
     @Override
+    @Transactional
     public void scoreApplication(Application application) {
         log.info("Scoring application {}", application.getApplicationId());
         ScoringRequestDto scoringRequestDto = ScoringRequestDto.builder()
@@ -80,6 +85,8 @@ public class ScoringServiceImpl implements ScoringService {
 
         log.info("Set status {} for application {}", application.getStatus().name(), application.getApplicationId());
         applicationService.saveApplication(application);
+        applicationExportTaskService.save(application.getApplicationId(), application.getStatus());
+
         sendApplicationStatusEmail(application);
 
         if (ApplicationStatus.ACCEPTED.equals(application.getStatus())) {
