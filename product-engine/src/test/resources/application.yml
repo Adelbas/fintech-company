@@ -3,13 +3,12 @@ spring:
     change-log: classpath:/db/db.changelog-master.yml
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${DATASOURCE_URL}
-    username: ${DATASOURCE_USERNAME}
-    password: ${DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/fintech_product_engine
+    username: postgres
 grpc:
   port: 9090
   enable-reflection: true
 overdue:
   scheduling:
-    cron-interval: ${SCHEDULER_INTERVAL_IN_CRON}
-    tz: ${TZ}
+    cron-interval: 0 0 0 * * *
+    tz: Europe/Moscow

@@ -6,7 +6,7 @@ import com.academy.fintech.pe.public_interface.agreement.exception.NotFoundExcep
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -40,5 +40,16 @@ public class AgreementService {
 
     public Optional<List<Agreement>> findAgreementsByClientIdAndStatus(UUID clientId, AgreementStatus status) {
         return agreementRepository.findByClientIdAndStatus(clientId, status);
+    }
+
+    public List<Agreement> getAgreementsReadyToCheckOverdue() {
+        LocalDateTime yesterdayStart = LocalDateTime.now().minusDays(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime yesterdayEnd = LocalDateTime.now().minusDays(1).withHour(23).withMinute(59).withSecond(59);
+
+        return agreementRepository.findAgreementsByNextPaymentDateBetweenAndStatus(
+                yesterdayStart,
+                yesterdayEnd,
+                AgreementStatus.ACTIVE
+        );
     }
 }
