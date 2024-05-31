@@ -115,8 +115,27 @@ services:
     ports:
       - '8085:8085'
 
+  dwh:
+    build: /dwh
+    restart: always
+    pull_policy: build
+    depends_on:
+      - db
+      - kafka
+    environment:
+      - TZ=Europe/Moscow
+      - DATASOURCE_USERNAME=postgres
+      - DATASOURCE_PASSWORD=postgres
+      - DB_DATABASE=fintech_dwh
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_SCHEMA=public
+      - DB_PARTMAN_SCHEMA=partman
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - KAFKA_CONSUMER_GROUP_ID=dwh
+
   db:
-    image: postgres:14.1-alpine
+    image: huntress/postgres-partman:14
     restart: always
     environment:
       - TZ=Europe/Moscow
